@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cuestionario de Matemáticas</title>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script>
+window.MathJax = {
+  tex: { 
+    inlineMath: [['$','$'],['\\(','\\)']], 
+    displayMath: [['$$','$$'],['\\[','\\]']], 
+    processEscapes: true 
+  },
+  options: { 
+    skipHtmlTags: ['script','noscript','style','textarea','pre'] 
+  }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+<style>
+:root{
+  --primary:#0c4a6e; --primary-light:#0284c7; --primary-soft:#e0f2fe;
+  --accent:#f59e0b; --accent-soft:#fef3c7;
+  --success:#16a34a; --success-soft:#dcfce7;
+  --danger:#dc2626; --danger-soft:#fee2e2;
+  --text:#0f172a; --text-soft:#475569;
+  --bg:#f8fafc; --card:#ffffff; --border:#e2e8f0;
+  --shadow:0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+  --shadow-lg:0 10px 25px -5px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  font-family:'Atkinson Hyperlegible','Lexend',system-ui,sans-serif;
+  background:var(--bg); color:var(--text); line-height:1.6;
+  padding:1rem; min-height:100vh;
+}
+mjx-container {
+  max-width:100%;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+mjx-container[jax="CHTML"][display="true"] {
+  margin:.5rem 0 !important;
+}
+.container{ max-width:780px; margin:0 auto; }
+header.quiz-header{
+  background:linear-gradient(135deg,var(--primary) 0%,var(--primary-light) 100%);
+  color:#fff; padding:2rem 1.5rem; border-radius:16px;
+  box-shadow:var(--shadow-lg); margin-bottom:1.5rem; text-align:center;
+}
+header.quiz-header h1{ font-family:'Lexend',sans-serif; font-size:1.6rem; font-weight:700; margin-bottom:.5rem; }
+header.quiz-header p{ opacity:.95; font-size:1rem; }
+.progress-bar{
+  background:var(--card); border-radius:12px; padding:1rem 1.25rem;
+  margin-bottom:1.5rem; box-shadow:var(--shadow);
+  display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+}
+.progress-text{ font-weight:600; color:var(--primary); font-size:.95rem; min-width:fit-content; }
+.progress-track{ flex:1; height:10px; background:var(--border); border-radius:5px; overflow:hidden; min-width:120px; }
+.progress-fill{ height:100%; background:linear-gradient(90deg,var(--primary-light),var(--accent)); transition:width .4s ease; width:0%; }
+.score-badge{ background:var(--primary-soft); color:var(--primary); padding:.4rem .9rem; border-radius:20px; font-weight:600; font-size:.9rem; }
+.question-card{
+  background:var(--card); border-radius:16px; padding:1.5rem;
+  box-shadow:var(--shadow); margin-bottom:1.25rem;
+  border-left:5px solid var(--primary);
+}
+.question-card.answered.correct{ border-left-color:var(--success); }
+.question-card.answered.incorrect{ border-left-color:var(--danger); }
+.q-number{
+  display:inline-block; background:var(--primary); color:#fff;
+  padding:.3rem .8rem; border-radius:20px; font-size:.85rem;
+  font-weight:600; margin-bottom:.85rem;
+}
+.q-text{ font-size:1.1rem; line-height:1.55; margin-bottom:1.25rem; color:var(--text); font-weight:500; }
+.options{ display:flex; flex-direction:column; gap:.6rem; }
+.option{
+  display:flex; align-items:flex-start; gap:.75rem;
+  padding:.9rem 1rem; background:#fff; border:2px solid var(--border);
+  border-radius:10px; cursor:pointer; transition:all .2s ease;
+  font-size:1rem; line-height:1.5;
+}
+.option:hover:not(.disabled){ border-color:var(--primary-light); background:var(--primary-soft); }
+.option.selected{ border-color:var(--primary); background:var(--primary-soft); }
+.option.correct{ border-color:var(--success); background:var(--success-soft); }
+.option.incorrect{ border-color:var(--danger); background:var(--danger-soft); }
+.option.disabled{ cursor:default; }
+.option-letter{
+  flex-shrink:0; width:28px; height:28px; border-radius:50%;
+  background:var(--border); color:var(--text); font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  font-size:.85rem;
+}
+.option.selected .option-letter{ background:var(--primary); color:#fff; }
+.option.correct .option-letter{ background:var(--success); color:#fff; }
+.option.incorrect .option-letter{ background:var(--danger); color:#fff; }
+.option-text{ flex:1; }
+.option-icon{ font-size:1.2rem; flex-shrink:0; }
+.feedback{
+  margin-top:1rem; padding:1rem 1.1rem; border-radius:10px;
+  font-size:.95rem; line-height:1.55; display:none;
+  border-left:4px solid;
+}
+.feedback.show{ display:block; animation:slideIn .35s ease; }
+@keyframes slideIn{ from{opacity:0; transform:translateY(-6px);} to{opacity:1; transform:translateY(0);} }
+.feedback.correct{ background:var(--success-soft); color:#14532d; border-left-color:var(--success); }
+.feedback.incorrect{ background:var(--danger-soft); color:#7f1d1d; border-left-color:var(--danger); }
+.feedback strong{ display:block; margin-bottom:.3rem; font-size:1rem; }
+.steps-box{
+  margin-top:.75rem; padding:.85rem 1rem;
+  background:var(--accent-soft); border-left:4px solid var(--accent);
+  border-radius:8px; font-size:.92rem; color:#78350f;
+}
+.steps-box strong{ display:block; margin-bottom:.3rem; color:#92400e; }
+.btn{
+  background:var(--primary); color:#fff; border:none;
+  padding:.85rem 1.5rem; border-radius:10px; font-size:1rem;
+  font-weight:600; cursor:pointer; transition:all .2s ease;
+  font-family:inherit; box-shadow:var(--shadow);
+}
+.btn:hover{ background:var(--primary-light); transform:translateY(-1px); }
+.btn:disabled{ opacity:.5; cursor:not-allowed; transform:none; }
+.btn-secondary{ background:var(--card); color:var(--primary); border:2px solid var(--primary); }
+.btn-secondary:hover{ background:var(--primary-soft); }
+.btn-accent{ background:var(--accent); color:#fff; }
+.btn-accent:hover{ background:#d97706; }
+.actions{ display:flex; gap:.75rem; flex-wrap:wrap; justify-content:center; margin-top:1.5rem; }
+.short-answer-input{
+  width:100%; padding:.85rem 1rem; font-size:1.05rem;
+  border:2px solid var(--border); border-radius:10px;
+  font-family:inherit; transition:border-color .2s;
+  background:#fff;
+}
+.short-answer-input:focus{ outline:none; border-color:var(--primary); }
+.tf-options{ display:grid; grid-template-columns:1fr 1fr; gap:.75rem; }
+.tf-btn{
+  padding:1rem; background:#fff; border:2px solid var(--border);
+  border-radius:10px; font-size:1.05rem; font-weight:600;
+  cursor:pointer; transition:all .2s; font-family:inherit;
+}
+.tf-btn:hover:not(.disabled){ border-color:var(--primary-light); background:var(--primary-soft); }
+.tf-btn.selected{ border-color:var(--primary); background:var(--primary-soft); }
+.tf-btn.correct{ border-color:var(--success); background:var(--success-soft); color:#14532d; }
+.tf-btn.incorrect{ border-color:var(--danger); background:var(--danger-soft); color:#7f1d1d; }
+.tf-btn.disabled{ cursor:default; }
+.final-card{
+  background:var(--card); border-radius:16px; padding:2rem 1.5rem;
+  box-shadow:var(--shadow-lg); text-align:center; margin-top:1rem;
+}
+.final-score{ font-size:3rem; font-weight:700; color:var(--primary); margin:.5rem 0; line-height:1; }
+.final-fraction{ color:var(--text-soft); font-size:1.1rem; margin-bottom:1rem; }
+.final-message{ font-size:1.1rem; margin-bottom:1.25rem; color:var(--text); }
+.final-actions{ display:flex; gap:.75rem; flex-wrap:wrap; justify-content:center; }
+footer.quiz-footer{
+  text-align:center; padding:1.5rem 1rem; color:var(--text-soft);
+  font-size:.85rem; margin-top:2rem; border-top:1px solid var(--border);
+}
+@media (max-width:600px){
+  body{ padding:.6rem; }
+  header.quiz-header{ padding:1.5rem 1rem; }
+  header.quiz-header h1{ font-size:1.35rem; }
+  .question-card{ padding:1.1rem; }
+  .q-text{ font-size:1.05rem; }
+  .option{ padding:.8rem .85rem; font-size:.95rem; }
+  .tf-options{ grid-template-columns:1fr; }
+  .progress-bar{ padding:.85rem 1rem; }
+}
+@media print{
+  body{ background:#fff; }
+  .actions, .final-actions, .progress-bar{ display:none; }
+  .question-card{ box-shadow:none; border:1px solid #ccc; page-break-inside:avoid; }
+  .feedback{ display:block !important; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="quiz-header">
+    <h1>Cuestionario de Matemáticas</h1>
+    <p>Responde cada pregunta. Recibirás feedback inmediato para aprender de los errores.</p>
+  </header>
+
+  <div class="progress-bar">
+    <div class="progress-text" id="progressText">Pregunta 0 de 0</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="score-badge" id="scoreBadge">0 aciertos</div>
+  </div>
+
+  <div id="quizContainer"></div>
+
+  <div class="actions" id="bottomActions" style="display:none;">
+    <button class="btn btn-accent" id="finishBtn">📊 Ver resultado final</button>
+  </div>
+
+  <div id="finalResult"></div>
+
+  <footer class="quiz-footer">
+    <p>Cuestionario interactivo de GEDparaHispanos · Generado con IA</p>
+  </footer>
+</div>
+
+<script>
+window.__QUIZ_DATA__ = [{"id":"q_1","number":1,"text":"Conversión: $1000$ $metros$ a $kilómetros$","type":"multiple_choice","options":[{"text":"$100$ $kilómetros$","correct":false,"feedback":"Olvidó dividir por $1000$."},{"text":"$1$ $kilómetro$","correct":true,"feedback":"Divide por $1000$ para convertir metros a kilómetros."},{"text":"$0,1$ $kilómetros$","correct":false,"feedback":"No aplicó la conversión correcta."},{"text":"$1000$ $kilómetros$","correct":false,"feedback":"Multiplicó en lugar de dividir."}],"correctAnswer":null,"feedbackCorrect":"","feedbackIncorrect":"","steps":""},{"id":"q_2","number":2,"text":"Conversión: $500$ $gramos$ a $kilogramos$","type":"multiple_choice","options":[{"text":"$5$ $kilogramos$","correct":false,"feedback":"No aplicó la conversión correcta."},{"text":"$50$ $kilogramos$","correct":false,"feedback":"Olvidó dividir por $1000$."},{"text":"$0,5$ $kilogramos$","correct":true,"feedback":"Divide por $1000$ para convertir gramos a kilogramos."},{"text":"$5000$ $kilogramos$","correct":false,"feedback":"Multiplicó en lugar de dividir."}],"correctAnswer":null,"feedbackCorrect":"","feedbackIncorrect":"","steps":""},{"id":"q_3","number":3,"text":"Conversión: $3600$ $segundos$ a $minutos$","type":"multiple_choice","options":[{"text":"$600$ $minutos$","correct":false,"feedback":"Multiplicó en lugar de dividir."},{"text":"$360$ $minutos$","correct":false,"feedback":"Olvidó dividir por $60$."},{"text":"$6$ $minutos$","correct":false,"feedback":"No aplicó la conversión correcta."},{"text":"$60$ $minutos$","correct":true,"feedback":"Divide por $60$ para convertir segundos a minutos."}],"correctAnswer":null,"feedbackCorrect":"","feedbackIncorrect":"","steps":""},{"id":"q_4","number":4,"text":"Conversión: $24$ $horas$ a $minutos$","type":"multiple_choice","options":[{"text":"$1440$ $minutos$","correct":true,"feedback":"Multiplica por $60$ para convertir horas a minutos."},{"text":"$144$ $minutos$","correct":false,"feedback":"No aplicó la conversión correcta."},{"text":"$24$ $minutos$","correct":false,"feedback":"Olvidó multiplicar por $60$."},{"text":"$140$ $minutos$","correct":false,"feedback":"Erró en la multiplicación."}],"correctAnswer":null,"feedbackCorrect":"","feedbackIncorrect":"","steps":""},{"id":"q_5","number":5,"text":"Conversión: $100$ $centímetros$ a $metros$","type":"multiple_choice","options":[{"text":"$100$ $metros$","correct":false,"feedback":"Olvidó dividir por $100$."},{"text":"$1000$ $metros$","correct":false,"feedback":"Multiplicó en lugar de dividir."},{"text":"$0,01$ $metros$","correct":false,"feedback":"No aplicó la conversión correcta."},{"text":"$1$ $metro$","correct":true,"feedback":"Divide por $100$ para convertir centímetros a metros."}],"correctAnswer":null,"feedbackCorrect":"","feedbackIncorrect":"","steps":""},{"id":"q_6","number":6,"text":"Conversión: $1$ $litro$ a $mililitros$","type":"multiple_choice","options":[{"text":"$1$ $mililitro$","correct":false,"feedback":"Olvidó multiplicar por $1000$."},{"text":"$10$ $mililitros$","correct":false,"feedback":"No aplicó la conversión correcta."},{"text":"$100$ $mililitros$","correct":false,"feedback":"Erró en la multiplicación."},{"text":"$1000$ $mililitros$","correct":true,"feedback":"Multiplica por $1000$ para convertir litros a mililitros."}],"correctAnswer":null,"feedbackCorrect":"","feedbackIncorrect":"","steps":""},{"id":"q_7","number":7,"text":"Conversión: $500$ $milímetros$ a $centímetros$","type":"multiple_choice","options":[{"text":"$5000$ $centímetros$","correct":false,"feedback":"Multiplicó en lugar de dividir."},{"text":"$5$ $centímetros$","correct":false,"feedback":"No aplicó la conversión correcta."},{"text":"$500$ $centímetros$","correct":false,"feedback":"Olvidó dividir por $10$."},{"text":"$50$ $centímetros$","correct":true,"feedback":"Divide por $10$ para convertir milímetros a centímetros."}],"correctAnswer":null,"feedbackCorrect":"","feedbackIncorrect":"","steps":""},{"id":"q_8","number":8,"text":"Conversión: $2$ $kilogramos$ a $gramos$","type":"multiple_choice","options":[{"text":"$2000$ $gramos$","correct":true,"feedback":"Multiplica por $1000$ para convertir kilogramos a gramos."},{"text":"$2$ $gramos$","correct":false,"feedback":"Olvidó multiplicar por $1000$."},{"text":"$20$ $gramos$","correct":false,"feedback":"Erró en la multiplicación."},{"text":"$200$ $gramos$","correct":false,"feedback":"No aplicó la conversión correcta."}],"correctAnswer":null,"feedbackCorrect":"","feedbackIncorrect":"","steps":""},{"id":"q_9","number":9,"text":"Conversión: $10$ $metros$ a $centímetros$","type":"multiple_choice","options":[{"text":"$100$ $centímetros$","correct":false,"feedback":"Erró en la multiplicación."},{"text":"$10000$ $centímetros$","correct":false,"feedback":"No aplicó la conversión correcta."},{"text":"$10$ $centímetros$","correct":false,"feedback":"Olvidó multiplicar por $100$."},{"text":"$1000$ $centímetros$","correct":true,"feedback":"Multiplica por $100$ para convertir metros a centímetros."}],"correctAnswer":null,"feedbackCorrect":"","feedbackIncorrect":"","steps":""},{"id":"q_10","number":10,"text":"Conversión: $0,5$ $litros$ a $mililitros$","type":"multiple_choice","options":[{"text":"$500$ $mililitros$","correct":true,"feedback":"Multiplica por $1000$ para convertir litros a mililitros."},{"text":"$50$ $mililitros$","correct":false,"feedback":"Erró en la multiplicación."},{"text":"$0,5$ $mililitros$","correct":false,"feedback":"Olvidó multiplicar por $1000$."},{"text":"$5$ $mililitros$","correct":false,"feedback":"No aplicó la conversión correcta."}],"correctAnswer":null,"feedbackCorrect":"","feedbackIncorrect":"","steps":""}];
+
+(function(){
+  const data = window.__QUIZ_DATA__ || [];
+  const container = document.getElementById('quizContainer');
+  const progressText = document.getElementById('progressText');
+  const progressFill = document.getElementById('progressFill');
+  const scoreBadge = document.getElementById('scoreBadge');
+  const finishBtn = document.getElementById('finishBtn');
+  const bottomActions = document.getElementById('bottomActions');
+  const finalResult = document.getElementById('finalResult');
+
+  const state = data.map(() => ({ answered:false, correct:false, userAnswer:null }));
+
+  function updateProgress(){
+    const answered = state.filter(s => s.answered).length;
+    const correct = state.filter(s => s.correct).length;
+    progressText.textContent = 'Respondidas: ' + answered + ' de ' + data.length;
+    progressFill.style.width = ((answered / data.length) * 100) + '%';
+    scoreBadge.textContent = correct + ' acierto' + (correct === 1 ? '' : 's');
+    if (answered === data.length) bottomActions.style.display = 'flex';
+  }
+
+  function renderQuestion(q, idx){
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = 'qcard-' + idx;
+
+    const header = '<div class="q-number">Pregunta ' + (idx + 1) + '</div>' +
+                   '<div class="q-text">' + escapeHtml(q.text) + '</div>';
+
+    let body = '';
+    if (q.type === 'multiple_choice' || q.type === 'multiple_answer'){
+      body = '<div class="options">';
+      q.options.forEach((opt, i) => {
+        const letter = String.fromCharCode(97 + i);
+        body += '<div class="option" data-qidx="' + idx + '" data-oidx="' + i + '">' +
+                '<div class="option-letter">' + letter + '</div>' +
+                '<div class="option-text">' + escapeHtml(opt.text) + '</div>' +
+                '<div class="option-icon"></div>' +
+                '</div>';
+      });
+      body += '</div>';
+      if (q.type === 'multiple_answer'){
+        body += '<button class="btn btn-secondary" style="margin-top:1rem;" data-submit-ma="' + idx + '">Confirmar respuesta</button>';
+      }
+    } else if (q.type === 'true_false'){
+      body = '<div class="tf-options">' +
+             '<button class="tf-btn" data-qidx="' + idx + '" data-tf="true">VERDADERO</button>' +
+             '<button class="tf-btn" data-qidx="' + idx + '" data-tf="false">FALSO</button>' +
+             '</div>';
+    } else if (q.type === 'short_answer'){
+      body = '<input type="text" class="short-answer-input" placeholder="Escribe tu respuesta..." data-qidx="' + idx + '" />' +
+             '<button class="btn btn-secondary" style="margin-top:.75rem;" data-submit-sa="' + idx + '">Comprobar</button>';
+    }
+
+    const feedback = '<div class="feedback" id="feedback-' + idx + '"></div>';
+    card.innerHTML = header + body + feedback;
+    container.appendChild(card);
+  }
+
+  function escapeHtml(t){
+    const d = document.createElement('div');
+    d.textContent = t == null ? '' : String(t);
+    return d.innerHTML;
+  }
+
+  function cleanFeedback(text){
+    if (!text || text.length < 100) return text;
+    var t = String(text);
+
+    var repeatedPattern = /([^.!?]{30,150}[.!?,])([\s\S]*?\1){2,}/;
+    var match = t.match(repeatedPattern);
+    if (match){
+      var firstIdx = t.indexOf(match[1]);
+      if (firstIdx >= 0){
+        t = t.substring(0, firstIdx + match[1].length).trim();
+      }
+    }
+
+    var connectors = ['pero si', 'sin embargo', 'pero el perímetro', 'pero si el', 'pero si se'];
+    for (var i = 0; i < connectors.length; i++){
+      var lower = t.toLowerCase();
+      var first = lower.indexOf(connectors[i]);
+      if (first < 0) continue;
+      var second = lower.indexOf(connectors[i], first + connectors[i].length);
+      if (second < 0) continue;
+      var third = lower.indexOf(connectors[i], second + connectors[i].length);
+      if (third >= 0){
+        t = t.substring(0, second).trim();
+        t = t.replace(/[,;]\s*$/, '.');
+        break;
+      }
+    }
+
+    if (t.length > 500){
+      var cut = t.substring(0, 500);
+      var lastPunct = Math.max(cut.lastIndexOf('.'), cut.lastIndexOf('!'), cut.lastIndexOf('?'));
+      if (lastPunct > 200) t = cut.substring(0, lastPunct + 1);
+      else t = cut + '…';
+    }
+    return t;
+  }
+
+  function triggerMathTypeset(elements){
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise(elements).catch(function(err){ console.log('MathJax typeset error:', err); });
+    }
+  }
+
+  function showFeedback(idx, isCorrect, html){
+    const fb = document.getElementById('feedback-' + idx);
+    fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'incorrect');
+    fb.innerHTML = html;
+    const card = document.getElementById('qcard-' + idx);
+    card.classList.add('answered', isCorrect ? 'correct' : 'incorrect');
+    if (data[idx].steps){
+      fb.innerHTML += '<div class="steps-box"><strong>📝 Procedimiento:</strong>' + escapeHtml(data[idx].steps) + '</div>';
+    }
+    triggerMathTypeset([fb]);
+  }
+
+  // ========== HANDLERS POR TIPO ==========
+  container.addEventListener('click', function(e){
+    const opt = e.target.closest('.option');
+    if (opt && !opt.classList.contains('disabled')){
+      const qidx = parseInt(opt.dataset.qidx);
+      const oidx = parseInt(opt.dataset.oidx);
+      const q = data[qidx];
+      if (state[qidx].answered) return;
+
+      if (q.type === 'multiple_choice'){
+        const card = document.getElementById('qcard-' + qidx);
+        const allOpts = card.querySelectorAll('.option');
+        allOpts.forEach((o, i) => {
+          o.classList.add('disabled');
+          if (q.options[i].correct){
+            o.classList.add('correct');
+            o.querySelector('.option-icon').textContent = '✓';
+          } else if (i === oidx){
+            o.classList.add('incorrect');
+            o.querySelector('.option-icon').textContent = '✗';
+          }
+        });
+        const isCorrect = q.options[oidx].correct;
+        state[qidx].answered = true;
+        state[qidx].correct = isCorrect;
+        state[qidx].userAnswer = oidx;
+
+        const selectedFb = q.options[oidx].feedback || '';
+        let fbHtml;
+        if (isCorrect){
+          fbHtml = '<strong>✅ ¡Correcto!</strong>' + escapeHtml(cleanFeedback(selectedFb));
+        } else {
+          const correctIdx = q.options.findIndex(o => o.correct);
+          const correctLetter = String.fromCharCode(97 + correctIdx);
+          const correctFb = q.options[correctIdx].feedback || '';
+          fbHtml = '<strong>❌ No es correcto</strong>' +
+                   '<div style="margin-bottom:.6rem;">' + escapeHtml(cleanFeedback(selectedFb)) + '</div>' +
+                   '<div style="padding-top:.5rem; border-top:1px solid rgba(0,0,0,.1);"><em>La respuesta correcta es <strong>' + correctLetter + ')</strong>. </em>' + escapeHtml(cleanFeedback(correctFb)) + '</div>';
+        }
+        showFeedback(qidx, isCorrect, fbHtml);
+        updateProgress();
+      } else if (q.type === 'multiple_answer'){
+        opt.classList.toggle('selected');
+      }
+    }
+
+    if (e.target.dataset.submitMa !== undefined){
+      const qidx = parseInt(e.target.dataset.submitMa);
+      const q = data[qidx];
+      if (state[qidx].answered) return;
+      const card = document.getElementById('qcard-' + qidx);
+      const selected = Array.from(card.querySelectorAll('.option.selected')).map(o => parseInt(o.dataset.oidx));
+      const correctIndices = q.options.map((o, i) => o.correct ? i : -1).filter(i => i !== -1);
+      const isAllCorrect = selected.length === correctIndices.length && selected.every(i => correctIndices.includes(i));
+
+      const allOpts = card.querySelectorAll('.option');
+      allOpts.forEach((o, i) => {
+        o.classList.add('disabled');
+        o.classList.remove('selected');
+        if (q.options[i].correct){
+          o.classList.add('correct');
+          o.querySelector('.option-icon').textContent = '✓';
+        } else if (selected.includes(i)){
+          o.classList.add('incorrect');
+          o.querySelector('.option-icon').textContent = '✗';
+        }
+      });
+      e.target.style.display = 'none';
+
+      state[qidx].answered = true;
+      state[qidx].correct = isAllCorrect;
+      state[qidx].userAnswer = selected;
+
+      let fbHtml;
+      if (isAllCorrect){
+        fbHtml = '<strong>✅ ¡Perfecto! Todas las correctas elegidas.</strong>';
+        const fbs = correctIndices.map(i => '<div>• <strong>' + String.fromCharCode(97 + i) + ')</strong> ' + escapeHtml(cleanFeedback(q.options[i].feedback || '')) + '</div>').join('');
+        fbHtml += fbs;
+      } else {
+        fbHtml = '<strong>❌ No completamente correcto</strong>';
+        const correctas = correctIndices.map(i => '<div>✓ <strong>' + String.fromCharCode(97 + i) + ')</strong> ' + escapeHtml(cleanFeedback(q.options[i].feedback || '')) + '</div>').join('');
+        const erradas = selected.filter(i => !correctIndices.includes(i)).map(i => '<div>✗ <strong>' + String.fromCharCode(97 + i) + ')</strong> ' + escapeHtml(cleanFeedback(q.options[i].feedback || '')) + '</div>').join('');
+        fbHtml += '<div style="margin-top:.5rem;"><em>Correctas:</em>' + correctas + '</div>';
+        if (erradas) fbHtml += '<div style="margin-top:.5rem;"><em>Tus errores:</em>' + erradas + '</div>';
+      }
+      showFeedback(qidx, isAllCorrect, fbHtml);
+      updateProgress();
+    }
+
+    if (e.target.dataset.tf !== undefined){
+      const qidx = parseInt(e.target.dataset.qidx);
+      const q = data[qidx];
+      if (state[qidx].answered) return;
+      const userAnswer = e.target.dataset.tf === 'true';
+      const isCorrect = userAnswer === q.correctAnswer;
+
+      const card = document.getElementById('qcard-' + qidx);
+      const btns = card.querySelectorAll('.tf-btn');
+      btns.forEach(b => {
+        b.classList.add('disabled');
+        const val = b.dataset.tf === 'true';
+        if (val === q.correctAnswer) b.classList.add('correct');
+        else if (val === userAnswer) b.classList.add('incorrect');
+      });
+
+      state[qidx].answered = true;
+      state[qidx].correct = isCorrect;
+      state[qidx].userAnswer = userAnswer;
+
+      const fb = isCorrect ? q.feedbackCorrect : q.feedbackIncorrect;
+      const fbHtml = (isCorrect ? '<strong>✅ ¡Correcto!</strong>' : '<strong>❌ No es correcto</strong>') + escapeHtml(cleanFeedback(fb || ''));
+      showFeedback(qidx, isCorrect, fbHtml);
+      updateProgress();
+    }
+
+    if (e.target.dataset.submitSa !== undefined){
+      const qidx = parseInt(e.target.dataset.submitSa);
+      const q = data[qidx];
+      if (state[qidx].answered) return;
+      const card = document.getElementById('qcard-' + qidx);
+      const inputEl = card.querySelector('.short-answer-input');
+      const userAnswer = inputEl.value.trim();
+      if (!userAnswer){ alert('Escribe una respuesta'); return; }
+
+      const normalize = s => String(s).toLowerCase().replace(/\s+/g,'').replace(/,/g,'.');
+      const isCorrect = normalize(userAnswer) === normalize(q.correctAnswer);
+
+      inputEl.disabled = true;
+      inputEl.style.borderColor = isCorrect ? 'var(--success)' : 'var(--danger)';
+      inputEl.style.background = isCorrect ? 'var(--success-soft)' : 'var(--danger-soft)';
+      e.target.style.display = 'none';
+
+      state[qidx].answered = true;
+      state[qidx].correct = isCorrect;
+      state[qidx].userAnswer = userAnswer;
+
+      let fbHtml;
+      if (isCorrect){
+        fbHtml = '<strong>✅ ¡Correcto!</strong>' + escapeHtml(cleanFeedback(q.feedbackCorrect || ''));
+      } else {
+        fbHtml = '<strong>❌ No es correcto</strong>' +
+                 '<div>La respuesta correcta es: <strong>' + escapeHtml(q.correctAnswer) + '</strong></div>' +
+                 '<div style="margin-top:.4rem;">' + escapeHtml(cleanFeedback(q.feedbackIncorrect || '')) + '</div>';
+      }
+      showFeedback(qidx, isCorrect, fbHtml);
+      updateProgress();
+    }
+  });
+
+  data.forEach((q, idx) => renderQuestion(q, idx));
+  updateProgress();
+
+  finishBtn.addEventListener('click', function(){
+    const correct = state.filter(s => s.correct).length;
+    const total = data.length;
+    const pct = Math.round((correct / total) * 100);
+    let msg, emoji;
+    if (pct >= 90){ msg = '¡Excelente trabajo!'; emoji = '🏆'; }
+    else if (pct >= 70){ msg = '¡Muy bien!'; emoji = '🎉'; }
+    else if (pct >= 50){ msg = 'Buen esfuerzo. Repasa los errores y vuelve a intentarlo.'; emoji = '💪'; }
+    else { msg = 'Sigue practicando — cada error es un paso hacia el dominio.'; emoji = '📚'; }
+
+    finalResult.innerHTML =
+      '<div class="final-card">' +
+      '<div style="font-size:3rem;">' + emoji + '</div>' +
+      '<div class="final-score">' + pct + '%</div>' +
+      '<div class="final-fraction">' + correct + ' de ' + total + ' correctas</div>' +
+      '<div class="final-message">' + msg + '</div>' +
+      '<div class="final-actions">' +
+      '<button class="btn btn-secondary" onclick="window.location.reload()">🔄 Reintentar todo</button>' +
+      '<button class="btn btn-accent" onclick="window.print()">🖨️ Imprimir resultados</button>' +
+      '</div></div>';
+    finalResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    bottomActions.style.display = 'none';
+    triggerMathTypeset([finalResult]);
+  });
+
+  if (data.length > 0) {
+    triggerMathTypeset([container]);
+  }
+})();
+</script>
+</body>
+</html>
