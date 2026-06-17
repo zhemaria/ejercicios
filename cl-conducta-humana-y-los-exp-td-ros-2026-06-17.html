@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Conducta Humana y los Experimentos de Pavlov — GEDparaHispanos.com</title>
+    <style>
+      :root {
+        --clr-primary: #831843;
+        --clr-secondary: #9d174d;
+        --clr-light: #fdf2f8;
+        --clr-light-border: #f9a8d4;
+        --clr-accent: #f472b6;
+        --clr-accent-hover: #f9a8d4;
+        --clr-accent-dark: #831843;
+        --clr-shadow: rgba(131, 24, 67, 0.1);
+        --clr-shadow-deep: rgba(131, 24, 67, 0.3);
+      }
+      li{
+        margin-left: 0.9em;
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap');
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: 'Lato', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 19px;
+        line-height: 1.75;
+        color: #212529;
+        background: #f8f9fa;
+        padding: 1.5rem;
+      }
+      .quiz-container {
+        max-width: 860px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 16px;
+        padding: 2rem 2.5rem;
+        box-shadow: 0 4px 20px var(--clr-shadow);
+      }
+      .quiz-site-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
+        color: #fff;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 900;
+        color: var(--clr-primary);
+        margin-bottom: 0.25rem;
+        line-height: 1.3;
+      }
+      .quiz-subtitulo {
+        color: #6b7280;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .quiz-texto-lectura {
+        background: var(--clr-light);
+        border: 2px solid var(--clr-primary);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        line-height: 1.85;
+      }
+      .quiz-texto-lectura h2 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--clr-primary);
+        margin-bottom: 1rem;
+      }
+      .quiz-texto-lectura p {
+        margin-bottom: 1em;
+        text-align: justify;
+      }
+      .quiz-texto-lectura p:last-child {
+        margin-bottom: 0;
+      }
+      .quiz-instrucciones {
+        background: #fff8e1;
+        border-left: 5px solid #f59e0b;
+        padding: 0.9rem 1.2rem;
+        margin-bottom: 2rem;
+        border-radius: 0 8px 8px 0;
+        font-style: italic;
+        color: #78350f;
+        font-size: 0.95rem;
+      }
+      details {
+        background: #f8f9fa;
+        border: 2px solid var(--clr-primary);
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        transition: box-shadow 0.25s;
+      }
+      details:hover {
+        box-shadow: 0 4px 12px var(--clr-shadow-deep);
+      }
+      details[open] {
+        background: #fff;
+      }
+      summary {
+        background: var(--clr-primary);
+        color: #fff;
+        padding: 0.9em 1.4em;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1.05em;
+        list-style: none;
+        transition: background-color 0.25s;
+        user-select: none;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::before {
+        content: '▶ ';
+        display: inline-block;
+        transition: transform 0.25s;
+        margin-right: 0.4em;
+      }
+      details[open] summary::before {
+        transform: rotate(90deg);
+      }
+      summary:hover {
+        background: var(--clr-secondary);
+      }
+      .details-contenido {
+        padding: 1.25rem 1.5rem;
+      }
+      details.respondida-correcta {
+        border-color: #16a34a;
+      }
+      details.respondida-correcta summary {
+        background: #16a34a;
+      }
+      details.respondida-incorrecta {
+        border-color: #dc2626;
+      }
+      details.respondida-incorrecta summary {
+        background: #dc2626;
+      }
+      .quiz-opciones {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6em;
+      }
+      .quiz-option {
+        display: flex;
+        align-items: center;
+        gap: 0.8em;
+        padding: 0.8em 1em;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        user-select: none;
+        background: #fff;
+      }
+      .quiz-option:hover {
+        border-color: var(--clr-secondary);
+        background: var(--clr-light);
+      }
+      .quiz-option.correcta {
+        border-color: #22c55e;
+        background: #f0fdf4;
+      }
+      .quiz-option.incorrecta {
+        border-color: #ef4444;
+        background: #fef2f2;
+      }
+      .quiz-option.disabled {
+        pointer-events: none;
+        opacity: 0.65;
+      }
+      .quiz-option.disabled.correcta {
+        opacity: 1;
+      }
+      .quiz-option-letter {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.85em;
+        color: #374151;
+        flex-shrink: 0;
+        transition: all 0.2s;
+      }
+      .quiz-option.correcta .quiz-option-letter {
+        background: #22c55e;
+        color: #fff;
+      }
+      .quiz-option.incorrecta .quiz-option-letter {
+        background: #ef4444;
+        color: #fff;
+      }
+      .quiz-option-text {
+        flex: 1;
+        color: #374151;
+        font-size: 0.97em;
+      }
+      .quiz-feedback {
+        margin-top: 0.8em;
+        padding: 0.85em 1em;
+        border-radius: 8px;
+        font-size: 0.9em;
+        line-height: 1.6;
+      }
+      .quiz-feedback.correcto {
+        background: #f0fdf4;
+        border: 1px solid #86efac;
+        color: #166534;
+      }
+      .quiz-feedback.incorrecto {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+      }
+      .quiz-score-panel {
+        background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
+        color: #fff;
+        border-radius: 14px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        margin-top: 2rem;
+        box-shadow: 0 8px 24px var(--clr-shadow-deep);
+      }
+      .quiz-score-panel h2 {
+        color: #fff;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .quiz-score-number {
+        font-size: 3.2rem;
+        font-weight: 900;
+        margin: 0.2em 0;
+        letter-spacing: -0.02em;
+      }
+      .quiz-score-bar-bg {
+        width: 100%;
+        max-width: 420px;
+        height: 14px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 7px;
+        margin: 1em auto;
+        overflow: hidden;
+      }
+      .quiz-score-bar-fill {
+        height: 100%;
+        background: var(--clr-accent);
+        border-radius: 7px;
+        transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .quiz-score-message {
+        font-size: 1.15em;
+        margin-top: 0.5em;
+        font-weight: 600;
+      }
+      .quiz-btn-reiniciar {
+        margin-top: 1.25em;
+        padding: 0.8em 2.2em;
+        background: var(--clr-accent);
+        color: var(--clr-accent-dark);
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 800;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: inline-block;
+      }
+      .quiz-btn-reiniciar:hover {
+        background: var(--clr-accent-hover);
+      }
+      .quiz-footer {
+        text-align: center;
+        color: #9ca3af;
+        font-size: 0.78rem;
+        margin-top: 2.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e5e7eb;
+      }
+      .quiz-footer a {
+        color: var(--clr-primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .quiz-footer a:hover {
+        text-decoration: underline;
+      }
+      .hidden {
+        display: none !important;
+      }
+      @media (max-width: 640px) {
+        body {
+          padding: 0.75rem;
+        }
+        .quiz-container {
+          padding: 1.25rem 1rem;
+          border-radius: 10px;
+        }
+        h1 {
+          font-size: 1.35rem;
+        }
+        .quiz-score-number {
+          font-size: 2.4rem;
+        }
+        .quiz-option {
+          padding: 0.65em 0.8em;
+        }
+      }
+      @media print {
+        body {
+          background: #fff;
+        }
+        .quiz-container {
+          box-shadow: none;
+        }
+        .quiz-btn-reiniciar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div class="quiz-site-badge">🎓 GEDparaHispanos.com</div>
+
+      <h1>🐶 Conducta Humana y los Experimentos de Pavlov</h1>
+      <p class="quiz-subtitulo">Comprensión lectora sobre reflejos innatos, aprendizaje y condicionamiento clásico</p>
+      <div class="quiz-texto-lectura">
+        <h2>📎 Texto de lectura</h2>
+        <p>
+          Ciertos aspectos de la conducta humana, como los
+          <span style="background-color: #d4584a; color: #fafafa; padding: 2px; font-weight: 700; border-radius: 4px">reflejos simples</span>
+          , son innatos. Los reflejos simples representan respuestas automáticas ante estímulos externos. Por ejemplo, cuando nos quemamos la yema de un dedo en la estufa, retiramos automáticamente la
+          mano.
+        </p>
+        <p>
+          Los reflejos simples ocurren de la siguiente manera: primero, una neurona sensorial lleva la información del estímulo de la piel a la médula espinal, de donde pasa a las neuronas motoras que
+          van a los músculos del brazo y la mano. Esto causa que retiremos la mano tan rápidamente que todo ocurre antes de que la información sobre el accidente llegue al encéfalo. Cuando la
+          información llega al encéfalo, sentimos de inmediato el dolor.
+        </p>
+        <p>
+          Sin embargo, otros aspectos de la conducta humana no son innatos sino más bien
+          <span style="background-color: #d4584a; color: #fafafa; padding: 2px; font-weight: 700; border-radius: 4px">aprendidos</span>
+          . Por ejemplo, aprendemos a relacionar eventos como el olor de los alimentos al cocinarlos con la hora de la comida. También aprendemos a practicar conductas recompensadas y evitamos las que
+          se castigan y por observación aprendemos de las experiencias y el ejemplo de los demás. A diferencia de los reflejos simples, el aprendizaje exige la participación de rutas complejas del
+          encéfalo.
+        </p>
+        <h3>LOS EXPERIMENTOS DE PAVLOV</h3>
+        <p>
+          lván Pavlov, científico ruso que se dedicó al estudio del sistema digestivo, sabía que al dar carne a un perro, éste salivaba. Pavlov también notó que cuando continuaba usando a un mismo
+          perro en particular, el perro empezaba a salivar al recibir estímulos relacionados con la carne (como las pisadas al acercarse, los sonidos que hacía el tazón de la comida, etc.).
+        </p>
+        <img src="https://www.lifeder.com/wp-content/uploads/2020/02/experimento-de-perros-de-Pavlov.jpg" width="100%" alt="Descripción" style="display: block; margin: 0 auto" />
+        <br />
+
+        <p>
+          Pavlov condujo algunos experimentos para descubrir, la causa de esto. Primero puso un perro en una sala pequeña y le adaptó un dispositivo para medir el volumen de saliva. Luego, desde una
+          sala contigua, ofrecía comida al animal después de aplicar un estímulo neutral, como el sonido de un afinador. Después de repetir varias veces el método, Pavlov hizo sonar el afinador sin
+          ofrecerle comida al perro y notó que éste empezaba a salivar de todos modos. El perro había aprendido por condicionamiento a relacionar el sonido con la hora de la comida. Después, Pavlov
+          condicionó a otros perros a salivar al hacer sonar un timbre, encender una luz, tocar una pata del animal y a la vista de un círculo.
+        </p>
+        <p>
+          Este proceso se divide en los siguientes elementos clave:
+          <ol>
+            <li><span style="background-color: #d4584a; color: #fafafa; padding: 2px; font-weight: 700; border-radius: 4px">Estímulo Incondicionado (EI):</span> La comida, que de manera natural y biológica produce la respuesta de salivación.</li>
+            <li><span style="background-color: #d4584a; color: #fafafa;padding: 2px;font-weight:700;border-radius: 4px;">Respuesta Incondicionada (RI):</span> La salivación natural del perro al ver o comer la comida.</li>
+            <li><span style="background-color: #d4584a; color: #fafafa;padding: 2px;font-weight:700;border-radius: 4px;">Estímulo Neutro (EN):</span> El sonido de la campana (inicialmente no provoca ninguna respuesta de salivación).</li>
+            <li><span style="background-color: #d4584a; color: #fafafa;padding: 2px;font-weight:700;border-radius: 4px;">Estímulo Condicionado (EC):</span> Tras el aprendizaje, la campana se convierte en este estímulo, ya que el perro lo asocia con la comida.</li>
+            <li><span style="background-color: #d4584a; color: #fafafa;padding: 2px;font-weight:700;border-radius: 4px;">Respuesta Condicionada (RC):</span> La salivación provocada únicamente por el sonido de la campana.</li>
+          </ol>
+        </p>
+      </div>
+      <div class="quiz-instrucciones">Lee el texto con atención y responde las siguientes preguntas eligiendo la mejor opción.</div>
+
+      <div id="quizPreguntas">
+        <details class="quiz-pregunta" id="pregunta-0">
+          <summary>Pregunta 1 — ¿Cuál es la idea principal del texto completo?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-0">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">La conducta humana puede ser innata, como los reflejos, o aprendida, como lo demuestran los experimentos de Pavlov.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Los experimentos de Pavlov son la única forma de explicar el comportamiento de los animales.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">El encéfalo controla todas las respuestas del cuerpo humano ante cualquier estímulo externo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Los perros pueden aprender cualquier tipo de conducta si se les entrena correctamente.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-0"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-1">
+          <summary>Pregunta 2 — ¿Por qué retiramos la mano de la estufa antes de sentir dolor?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-1">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Porque el encéfalo envía una señal de advertencia antes de que ocurra la quemadura.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Porque la información viaja por la médula espinal a los músculos antes de llegar al encéfalo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Porque las neuronas motoras bloquean el dolor para que podamos reaccionar más rápido.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Porque los reflejos son conductas aprendidas desde la infancia.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-1"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-2">
+          <summary>Pregunta 3 — ¿En qué se diferencian principalmente los reflejos simples del aprendizaje según el texto?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-2">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Los reflejos son voluntarios, mientras que el aprendizaje ocurre de forma automática.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Los reflejos dependen de la médula espinal y son automáticos; el aprendizaje requiere rutas complejas del encéfalo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Los reflejos solo ocurren en animales, mientras que el aprendizaje es exclusivo de los seres humanos.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Los reflejos se pueden modificar con entrenamiento, pero el aprendizaje es permanente.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-2"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-3">
+          <summary>Pregunta 4 — ¿Qué se puede inferir sobre el papel de Pavlov en la ciencia, según la información del texto?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-3">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Pavlov era principalmente un entrenador de animales que accidentalmente descubrió el condicionamiento.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Pavlov llegó al descubrimiento del condicionamiento mientras investigaba un tema diferente: el sistema digestivo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Pavlov diseñó sus experimentos desde el principio para estudiar el aprendizaje en seres humanos.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Pavlov demostró que todos los animales pueden aprender cualquier conducta sin límites.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-3"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-4">
+          <summary>Pregunta 5 — ¿Cuál fue el efecto de repetir varias veces el sonido del afinador junto con la comida en el experimento de Pavlov?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-4">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">El perro dejó de salivar porque se acostumbró a la rutina del experimento.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">El perro aprendió a ignorar el sonido del afinador y solo respondía a la comida.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">El perro comenzó a salivar únicamente al escuchar el sonido del afinador, sin necesidad de la comida.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">El perro desarrolló un reflejo innato ante el sonido del afinador.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-4"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-5">
+          <summary>Pregunta 6 — Según el texto, ¿cómo se llama la salivación del perro cuando ocurre únicamente al escuchar la campana, después del condicionamiento?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-5">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Estímulo Condicionado (EC)</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Respuesta Incondicionada (RI)</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Estímulo Incondicionado (EI)</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Respuesta Condicionada (RC)</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-5"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-6">
+          <summary>Pregunta 7 — ¿Qué similitud existe entre el ejemplo del olor a comida mencionado en el tercer párrafo y los experimentos de Pavlov?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-6">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Ambos demuestran que la salivación es un reflejo innato que no puede modificarse.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">En ambos casos, una persona o animal aprende a asociar un estímulo con la hora de la comida.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Los dos ejemplos muestran que el encéfalo no participa en las respuestas relacionadas con la comida.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Ambos son ejemplos de conductas innatas que no requieren aprendizaje previo.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-6"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-7">
+          <summary>Pregunta 8 — ¿Qué se puede inferir sobre el Estímulo Neutro (EN) antes de que comience el experimento de condicionamiento?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-7">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">El estímulo neutro ya produce salivación en el perro desde la primera vez que se escucha.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">El estímulo neutro es ignorado por el perro porque no tiene ninguna relación con la comida.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">El estímulo neutro solo funciona si se combina con un estímulo incondicionado fuerte.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">El estímulo neutro provoca miedo en el perro antes de asociarse con la comida.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-7"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-8">
+          <summary>Pregunta 9 — ¿Cuál es la causa de que el perro en los experimentos de Pavlov empezara a salivar antes de recibir la carne, solo al escuchar pasos o los sonidos del tazón?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-8">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">El perro desarrolló un reflejo innato después de muchas generaciones de entrenamiento.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">La salivación ante esos estímulos era una respuesta incondicionada presente desde que nació.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">El perro había aprendido a asociar esos estímulos con la llegada de la comida por experiencia repetida.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Pavlov modificó genéticamente al perro para que respondiera a más estímulos.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-8"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-9">
+          <summary>Pregunta 10 — ¿Qué se puede inferir sobre por qué Pavlov utilizó un dispositivo para medir el volumen de saliva en sus experimentos?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-9">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Quería asegurarse de que el perro estuviera sano y bien alimentado durante el experimento.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Necesitaba datos precisos y medibles para demostrar científicamente que el condicionamiento ocurría.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">El dispositivo servía para aplicar el estímulo neutro directamente al perro.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Lo usó para evitar que el perro salivara demasiado y se pusiera nervioso.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-9"></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="quiz-score-panel hidden" id="scorePanel">
+        <h2>📊 Resultado final</h2>
+        <div class="quiz-score-number" id="scoreNumber">0/10</div>
+        <div class="quiz-score-bar-bg"><div class="quiz-score-bar-fill" id="scoreBar" style="width: 0%"></div></div>
+        <div class="quiz-score-message" id="scoreMessage"></div>
+        <div class="quiz-btn-reiniciar" onclick="reiniciarQuiz()">🔄 Reiniciar ejercicio</div>
+      </div>
+
+      <div class="quiz-footer">
+        Ejercicio generado para
+        <a href="https://GEDparaHispanos.com" target="_blank">GEDparaHispanos.com</a>
+        — Preparación GED en español — Uso libre y gratuito
+      </div>
+    </div>
+
+    <script>
+      var RC = [0, 1, 1, 1, 2, 3, 1, 1, 2, 1];
+      var EX = [
+        'El texto presenta dos grandes temas: la conducta innata (reflejos) y la conducta aprendida (condicionamiento). Los experimentos de Pavlov sirven como ejemplo del aprendizaje, por lo que la idea principal abarca ambos conceptos.',
+        'El texto explica que la neurona sensorial lleva la información a la médula espinal, que activa los músculos del brazo. Esto ocurre antes de que la señal llegue al encéfalo, donde se siente el dolor.',
+        "El texto indica que los reflejos son automáticos y usan la médula espinal, mientras que el aprendizaje 'exige la participación de rutas complejas del encéfalo', lo que los distingue claramente.",
+        "El texto menciona que Pavlov 'se dedicó al estudio del sistema digestivo'. Su observación de la salivación fue un hallazgo surgido en ese contexto, lo que implica que el descubrimiento del condicionamiento fue un resultado inesperado de otra investigación.",
+        'El texto establece que después de repetir el método varias veces, el perro salivaba solo con el sonido del afinador, sin recibir comida. Esto es el resultado directo del condicionamiento repetido.',
+        "El texto define la Respuesta Condicionada (RC) como 'la salivación provocada únicamente por el sonido de la campana', es decir, la respuesta aprendida ante el estímulo condicionado.",
+        "El texto dice que los humanos 'aprendemos a relacionar eventos como el olor de los alimentos al cocinarlos con la hora de la comida'. En los experimentos de Pavlov, el perro aprende a relacionar el sonido con la comida. Ambos son ejemplos del mismo proceso de asociación aprendida.",
+        "El texto define el Estímulo Neutro como aquel que 'inicialmente no provoca ninguna respuesta de salivación'. Se puede inferir que el perro simplemente no reacciona ante él porque no tiene ningún significado relacionado con la comida antes del experimento.",
+        'El texto indica que al continuar usando al mismo perro, este comenzó a salivar ante estímulos relacionados con la carne. Esto se debe a que el perro asoció esos estímulos con la comida a través de la experiencia repetida, lo cual es la base del condicionamiento.',
+        'Aunque el texto no lo explica directamente, se puede inferir que Pavlov, como científico, necesitaba medir objetivamente la salivación para tener evidencia concreta del condicionamiento. Medir el volumen de saliva le permitía comparar las respuestas antes y después del condicionamiento.'
+      ];
+      var TQ = 10;
+      var resp = 0,
+        corr = 0;
+
+      function seleccionarOpcion(el, qi, oi) {
+        var p = document.getElementById('pregunta-' + qi);
+        if (p.classList.contains('respondida-correcta') || p.classList.contains('respondida-incorrecta')) return;
+        var ops = document.querySelectorAll('#opciones-' + qi + ' .quiz-option');
+        for (var i = 0; i < ops.length; i++) {
+          ops[i].classList.add('disabled');
+          ops[i].classList.remove('selected');
+        }
+        var ok = oi === RC[qi];
+        var fb = document.getElementById('feedback-' + qi);
+        if (ok) {
+          el.classList.add('correcta');
+          p.classList.add('respondida-correcta');
+          fb.className = 'quiz-feedback correcto';
+          fb.innerHTML = '✅ <strong>¡Correcto!</strong> ' + EX[qi];
+          corr++;
+        } else {
+          el.classList.add('incorrecta');
+          p.classList.add('respondida-incorrecta');
+          ops[RC[qi]].classList.add('correcta');
+          fb.className = 'quiz-feedback incorrecto';
+          fb.innerHTML = '❌ <strong>Incorrecto.</strong> ' + EX[qi];
+        }
+        fb.classList.remove('hidden');
+        p.setAttribute('open', '');
+        resp++;
+        if (resp === TQ) mostrarPuntaje();
+      }
+
+      function mostrarPuntaje() {
+        var pct = Math.round((corr / TQ) * 100);
+        document.getElementById('scoreNumber').textContent = corr + '/' + TQ + ' (' + pct + '%)';
+        document.getElementById('scoreBar').style.width = pct + '%';
+        var msg =
+          pct === 100
+            ? '🌟 ¡Perfecto! ¡Excelente trabajo!'
+            : pct >= 80
+              ? '👏 ¡Muy bien! Sigue practicando.'
+              : pct >= 60
+                ? '👍 Buen esfuerzo. Repasa los errores.'
+                : '📚 Sigue practicando. ¡Tú puedes!';
+        document.getElementById('scoreMessage').textContent = msg;
+        document.getElementById('scorePanel').classList.remove('hidden');
+        document.getElementById('scorePanel').scrollIntoView({behavior: 'smooth'});
+      }
+
+      function reiniciarQuiz() {
+        resp = 0;
+        corr = 0;
+        document.getElementById('scorePanel').classList.add('hidden');
+        for (var i = 0; i < TQ; i++) {
+          var p = document.getElementById('pregunta-' + i);
+          p.classList.remove('respondida-correcta', 'respondida-incorrecta');
+          p.removeAttribute('open');
+          var ops = document.querySelectorAll('#opciones-' + i + ' .quiz-option');
+          for (var j = 0; j < ops.length; j++) {
+            ops[j].classList.remove('disabled', 'selected', 'correcta', 'incorrecta');
+          }
+          var fb = document.getElementById('feedback-' + i);
+          fb.className = 'quiz-feedback hidden';
+          fb.innerHTML = '';
+        }
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      }
+    </script>
+  </body>
+</html>

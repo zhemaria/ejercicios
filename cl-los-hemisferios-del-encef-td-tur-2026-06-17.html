@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Los Hemisferios del Encéfalo — GEDparaHispanos.com</title>
+    <style>
+      :root {
+        --clr-primary: #155e75;
+        --clr-secondary: #0e7490;
+        --clr-light: #ecfeff;
+        --clr-light-border: #67e8f9;
+        --clr-accent: #22d3ee;
+        --clr-accent-hover: #67e8f9;
+        --clr-accent-dark: #155e75;
+        --clr-shadow: rgba(21, 94, 117, 0.1);
+        --clr-shadow-deep: rgba(21, 94, 117, 0.3);
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap');
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: 'Lato', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 19px;
+        line-height: 1.75;
+        color: #212529;
+        background: #f8f9fa;
+        padding: 1.5rem;
+      }
+      .quiz-container {
+        max-width: 860px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 16px;
+        padding: 2rem 2.5rem;
+        box-shadow: 0 4px 20px var(--clr-shadow);
+      }
+      .quiz-site-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
+        color: #fff;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 900;
+        color: var(--clr-primary);
+        margin-bottom: 0.25rem;
+        line-height: 1.3;
+      }
+      .quiz-subtitulo {
+        color: #6b7280;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .quiz-texto-lectura {
+        background: var(--clr-light);
+        border: 2px solid var(--clr-primary);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        line-height: 1.85;
+      }
+      .quiz-texto-lectura h2 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--clr-primary);
+        margin-bottom: 1rem;
+      }
+      .quiz-texto-lectura p {
+        margin-bottom: 1em;
+        text-align: justify;
+      }
+      .quiz-texto-lectura p:last-child {
+        margin-bottom: 0;
+      }
+      .quiz-instrucciones {
+        background: #fff8e1;
+        border-left: 5px solid #f59e0b;
+        padding: 0.9rem 1.2rem;
+        margin-bottom: 2rem;
+        border-radius: 0 8px 8px 0;
+        font-style: italic;
+        color: #78350f;
+        font-size: 0.95rem;
+      }
+      details {
+        background: #f8f9fa;
+        border: 2px solid var(--clr-primary);
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        transition: box-shadow 0.25s;
+      }
+      details:hover {
+        box-shadow: 0 4px 12px var(--clr-shadow-deep);
+      }
+      details[open] {
+        background: #fff;
+      }
+      summary {
+        background: var(--clr-primary);
+        color: #fff;
+        padding: 0.9em 1.4em;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1.05em;
+        list-style: none;
+        transition: background-color 0.25s;
+        user-select: none;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::before {
+        content: '▶ ';
+        display: inline-block;
+        transition: transform 0.25s;
+        margin-right: 0.4em;
+      }
+      details[open] summary::before {
+        transform: rotate(90deg);
+      }
+      summary:hover {
+        background: var(--clr-secondary);
+      }
+      .details-contenido {
+        padding: 1.25rem 1.5rem;
+      }
+      details.respondida-correcta {
+        border-color: #16a34a;
+      }
+      details.respondida-correcta summary {
+        background: #16a34a;
+      }
+      details.respondida-incorrecta {
+        border-color: #dc2626;
+      }
+      details.respondida-incorrecta summary {
+        background: #dc2626;
+      }
+      .quiz-opciones {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6em;
+      }
+      .quiz-option {
+        display: flex;
+        align-items: center;
+        gap: 0.8em;
+        padding: 0.8em 1em;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        user-select: none;
+        background: #fff;
+      }
+      .quiz-option:hover {
+        border-color: var(--clr-secondary);
+        background: var(--clr-light);
+      }
+      .quiz-option.correcta {
+        border-color: #22c55e;
+        background: #f0fdf4;
+      }
+      .quiz-option.incorrecta {
+        border-color: #ef4444;
+        background: #fef2f2;
+      }
+      .quiz-option.disabled {
+        pointer-events: none;
+        opacity: 0.65;
+      }
+      .quiz-option.disabled.correcta {
+        opacity: 1;
+      }
+      .quiz-option-letter {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.85em;
+        color: #374151;
+        flex-shrink: 0;
+        transition: all 0.2s;
+      }
+      .quiz-option.correcta .quiz-option-letter {
+        background: #22c55e;
+        color: #fff;
+      }
+      .quiz-option.incorrecta .quiz-option-letter {
+        background: #ef4444;
+        color: #fff;
+      }
+      .quiz-option-text {
+        flex: 1;
+        color: #374151;
+        font-size: 0.97em;
+      }
+      .quiz-feedback {
+        margin-top: 0.8em;
+        padding: 0.85em 1em;
+        border-radius: 8px;
+        font-size: 0.9em;
+        line-height: 1.6;
+      }
+      .quiz-feedback.correcto {
+        background: #f0fdf4;
+        border: 1px solid #86efac;
+        color: #166534;
+      }
+      .quiz-feedback.incorrecto {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+      }
+      .quiz-score-panel {
+        background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
+        color: #fff;
+        border-radius: 14px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        margin-top: 2rem;
+        box-shadow: 0 8px 24px var(--clr-shadow-deep);
+      }
+      .quiz-score-panel h2 {
+        color: #fff;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .quiz-score-number {
+        font-size: 3.2rem;
+        font-weight: 900;
+        margin: 0.2em 0;
+        letter-spacing: -0.02em;
+      }
+      .quiz-score-bar-bg {
+        width: 100%;
+        max-width: 420px;
+        height: 14px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 7px;
+        margin: 1em auto;
+        overflow: hidden;
+      }
+      .quiz-score-bar-fill {
+        height: 100%;
+        background: var(--clr-accent);
+        border-radius: 7px;
+        transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .quiz-score-message {
+        font-size: 1.15em;
+        margin-top: 0.5em;
+        font-weight: 600;
+      }
+      .quiz-btn-reiniciar {
+        margin-top: 1.25em;
+        padding: 0.8em 2.2em;
+        background: var(--clr-accent);
+        color: var(--clr-accent-dark);
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 800;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: inline-block;
+      }
+      .quiz-btn-reiniciar:hover {
+        background: var(--clr-accent-hover);
+      }
+      .quiz-footer {
+        text-align: center;
+        color: #9ca3af;
+        font-size: 0.78rem;
+        margin-top: 2.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e5e7eb;
+      }
+      .quiz-footer a {
+        color: var(--clr-primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .quiz-footer a:hover {
+        text-decoration: underline;
+      }
+      .hidden {
+        display: none !important;
+      }
+      @media (max-width: 640px) {
+        body {
+          padding: 0.75rem;
+        }
+        .quiz-container {
+          padding: 1.25rem 1rem;
+          border-radius: 10px;
+        }
+        h1 {
+          font-size: 1.35rem;
+        }
+        .quiz-score-number {
+          font-size: 2.4rem;
+        }
+        .quiz-option {
+          padding: 0.65em 0.8em;
+        }
+      }
+      @media print {
+        body {
+          background: #fff;
+        }
+        .quiz-container {
+          box-shadow: none;
+        }
+        .quiz-btn-reiniciar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div class="quiz-site-badge">🎓 GEDparaHispanos.com</div>
+
+      <h1>🧠 Los Hemisferios del Encéfalo</h1>
+      <p class="quiz-subtitulo">Comprensión lectora sobre las funciones del cerebro humano</p>
+      <div class="quiz-texto-lectura">
+        <h2>📎 Texto de lectura</h2>
+        <p>
+          Las investigaciones han demostrado que los dos lados, o hemisferios, del encéfalo tienen funciones especializadas hasta cierto punto. El hemisferio izquierdo es responsable en gran parte de
+          la capacidad verbal y el razonamiento lógico, mientras que el hemisferio derecho procesa las percepciones visuales y emocionales. Ambos hemisferios se comunican por medio de un segmento
+          ancho de tejido nervioso denominado
+          <span style="background-color: #e8f5e9; padding: 2px; font-weight: 700">cuerpo calloso</span>
+          .
+        </p>
+        <p>
+          <span style="float: left; width: 100%; padding: 5px; font-size: 11px; text-align: center; font-style: italic">
+            <img src="https://haiki.es/wp-content/uploads/2016/03/hemisferio-cerebral-cerebro-haiki.jpg" alt="Descripción breve" />
+            <br />
+            <i>Pie de imagen.</i>
+          </span>
+          Antiguamente la creencia popular arraigada era que ambos hemisferios encefálicos tenían funciones distintas. Según esta creencia, muchas veces se decía que las personas inclinadas al uso de
+          las habilidades lingüísticas y el razonamiento lógico usaban mayormente el hemisferio izquierdo, mientras que los artistas y las personas emotivas usaban el derecho. Sin embargo, los
+          científicos han descubierto que
+          <span style="background-color: #e8f5e9; padding: 2px; font-weight: 700">muchas de las funciones del encéfalo no son exclusivas de un hemisferio u otro</span>
+          . De hecho, las actividades complejas del ser humano exigen la participación de ambos hemisferios. Los estudios demuestran que la lectura de cuentos requiere el procesamiento de ambos
+          hemisferios: el hemisferio izquierdo procesa el texto leído, mientras que el derecho procesa las imágenes y el contenido emocional.
+        </p>
+      </div>
+      <div class="quiz-instrucciones">Lee el texto con atención y responde cada pregunta eligiendo la mejor opción. Solo una respuesta es correcta.</div>
+
+      <div id="quizPreguntas">
+        <details class="quiz-pregunta" id="pregunta-0">
+          <summary>Pregunta 1 — ¿Cuál es la idea principal del segundo párrafo del texto?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-0">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Los artistas usan exclusivamente el hemisferio derecho del encéfalo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">La creencia antigua de que los hemisferios tienen funciones separadas ha sido cuestionada por la ciencia.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">El hemisferio izquierdo es más importante que el derecho para actividades complejas.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">La lectura de cuentos es la actividad más compleja que realiza el ser humano.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-0"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-1">
+          <summary>Pregunta 2 — ¿Cuál es la idea principal de todo el texto?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-1">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">El cuerpo calloso conecta los dos hemisferios del encéfalo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Los hemisferios del encéfalo tienen algunas funciones especializadas, pero trabajan juntos en actividades complejas.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">El hemisferio derecho es el más importante para los artistas y personas emotivas.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Las investigaciones científicas sobre el encéfalo son muy recientes.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-1"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-2">
+          <summary>Pregunta 3 — ¿Qué función cumple el cuerpo calloso en el encéfalo?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-2">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Controla el razonamiento lógico de ambos hemisferios.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Separa físicamente el hemisferio izquierdo del derecho para evitar interferencias.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Permite la comunicación entre el hemisferio izquierdo y el hemisferio derecho.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Procesa las percepciones visuales y emocionales del ser humano.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-2"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-3">
+          <summary>Pregunta 4 — ¿En qué se parecen el hemisferio izquierdo y el hemisferio derecho según el texto?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-3">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Ambos procesan únicamente funciones relacionadas con el lenguaje.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Los dos participan en actividades complejas como la lectura de cuentos.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Ambos tienen exactamente las mismas funciones especializadas.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Los dos son responsables del razonamiento lógico y emocional por igual.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-3"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-4">
+          <summary>Pregunta 5 — ¿En qué se diferencian el hemisferio izquierdo y el hemisferio derecho según el texto?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-4">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">El izquierdo procesa percepciones visuales y el derecho controla el movimiento.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">El izquierdo maneja la capacidad verbal y el razonamiento lógico, mientras que el derecho procesa percepciones visuales y emocionales.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">El izquierdo es usado por artistas y el derecho por personas con habilidades lingüísticas.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">El izquierdo se comunica con el cuerpo calloso y el derecho no.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-4"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-5">
+          <summary>Pregunta 6 — ¿En qué se diferencia la creencia popular antigua sobre el encéfalo de lo que los científicos han descubierto?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-5">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">La creencia antigua decía que ambos hemisferios cooperaban; la ciencia dice que trabajan por separado.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">La creencia antigua sostenía que las funciones eran exclusivas de cada hemisferio; la ciencia muestra que muchas funciones requieren ambos.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">La creencia antigua ignoraba la existencia del cuerpo calloso; la ciencia lo descubrió recientemente.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">La creencia antigua afirmaba que solo el hemisferio derecho era importante; la ciencia dice que solo importa el izquierdo.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-5"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-6">
+          <summary>Pregunta 7 — Según el texto, ¿qué causa que la lectura de cuentos requiera la participación de ambos hemisferios?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-6">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">La lectura de cuentos activa el cuerpo calloso, que ordena a ambos hemisferios trabajar.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Los cuentos contienen tanto texto escrito como imágenes y contenido emocional, que son procesados por hemisferios distintos.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">El hemisferio izquierdo no puede procesar textos sin la ayuda del derecho.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Los científicos diseñaron los cuentos específicamente para ejercitar ambos lados del encéfalo.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-6"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-7">
+          <summary>Pregunta 8 — Según el texto, ¿qué efecto tuvieron los descubrimientos científicos sobre la creencia popular de los hemisferios?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-7">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Confirmaron completamente que artistas y personas lógicas usan hemisferios diferentes.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Demostraron que la creencia popular era incorrecta al mostrar que muchas funciones no son exclusivas de un hemisferio.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Reforzaron la idea de que el hemisferio izquierdo es más importante para el ser humano.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Eliminaron por completo el concepto de que los hemisferios tienen alguna especialización.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-7"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-8">
+          <summary>Pregunta 9 — ¿Qué se puede inferir sobre una persona que realiza una actividad que requiere razonamiento lógico Y creatividad visual al mismo tiempo?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-8">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Esa persona solo puede usar un hemisferio a la vez, por lo que tendrá dificultades.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Esa persona necesitará usar principalmente el hemisferio derecho para completar la tarea.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Ambos hemisferios de esa persona estarán activos y trabajando en conjunto durante esa actividad.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">El cuerpo calloso de esa persona bloqueará la comunicación entre los hemisferios para evitar confusión.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-8"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-9">
+          <summary>Pregunta 10 — ¿Qué se puede inferir sobre por qué el texto menciona que la especialización de los hemisferios existe solo 'hasta cierto punto'?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-9">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Porque los científicos aún no han podido estudiar completamente el encéfalo humano.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Porque aunque cada hemisferio tiene funciones propias, también colaboran en muchas tareas sin que una sea exclusiva del otro.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Porque el cuerpo calloso impide que cada hemisferio desarrolle sus funciones por completo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Porque las funciones de los hemisferios cambian con la edad y no son permanentes.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-9"></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="quiz-score-panel hidden" id="scorePanel">
+        <h2>📊 Resultado final</h2>
+        <div class="quiz-score-number" id="scoreNumber">0/10</div>
+        <div class="quiz-score-bar-bg"><div class="quiz-score-bar-fill" id="scoreBar" style="width: 0%"></div></div>
+        <div class="quiz-score-message" id="scoreMessage"></div>
+        <div class="quiz-btn-reiniciar" onclick="reiniciarQuiz()">🔄 Reiniciar ejercicio</div>
+      </div>
+
+      <div class="quiz-footer">
+        Ejercicio generado para
+        <a href="https://GEDparaHispanos.com" target="_blank">GEDparaHispanos.com</a>
+        — Preparación GED en español — Uso libre y gratuito
+      </div>
+    </div>
+
+    <script>
+      var RC = [1, 1, 2, 1, 1, 1, 1, 1, 2, 1];
+      var EX = [
+        'El segundo párrafo comienza mencionando una creencia antigua, pero su punto central es que los científicos han descubierto que esa creencia era incorrecta y que ambos hemisferios participan juntos en actividades complejas.',
+        'El texto completo presenta primero las especializaciones de cada hemisferio y luego aclara que ambos colaboran. La idea central es que los hemisferios se especializan pero también cooperan.',
+        "El texto dice claramente que 'ambos hemisferios se comunican por medio de un segmento ancho de tejido nervioso denominado cuerpo calloso', lo que indica que su función es la comunicación entre ambos lados.",
+        'A pesar de sus diferencias, el texto señala que ambos hemisferios participan juntos en actividades complejas. El ejemplo de la lectura de cuentos muestra que los dos trabajan en conjunto.',
+        'El primer párrafo establece claramente la diferencia: el hemisferio izquierdo se especializa en la capacidad verbal y el razonamiento lógico, mientras que el derecho procesa las percepciones visuales y emocionales.',
+        'El texto contrasta la creencia popular —que cada hemisferio tenía funciones exclusivas y separadas— con el descubrimiento científico de que muchas funciones no son exclusivas y que las actividades complejas requieren ambos hemisferios.',
+        'El texto explica que la lectura de cuentos involucra el texto leído (procesado por el hemisferio izquierdo) y las imágenes y contenido emocional (procesados por el derecho). Es la naturaleza compleja del cuento lo que requiere ambos hemisferios.',
+        "El texto dice 'Sin embargo, los científicos han descubierto que muchas de las funciones del encéfalo no son exclusivas de un hemisferio u otro', lo que contradice y derrumba la creencia popular anterior.",
+        'El texto establece que las actividades complejas exigen la participación de ambos hemisferios. Una actividad que combina razonamiento lógico (hemisferio izquierdo) y creatividad visual (hemisferio derecho) es compleja, por lo que se infiere que ambos estarían activos.',
+        "La frase 'hasta cierto punto' sugiere que la especialización es parcial. El resto del texto confirma esto: aunque existen diferencias entre los hemisferios, muchas funciones no son exclusivas y ambos colaboran en actividades complejas."
+      ];
+      var TQ = 10;
+      var resp = 0,
+        corr = 0;
+
+      function seleccionarOpcion(el, qi, oi) {
+        var p = document.getElementById('pregunta-' + qi);
+        if (p.classList.contains('respondida-correcta') || p.classList.contains('respondida-incorrecta')) return;
+        var ops = document.querySelectorAll('#opciones-' + qi + ' .quiz-option');
+        for (var i = 0; i < ops.length; i++) {
+          ops[i].classList.add('disabled');
+          ops[i].classList.remove('selected');
+        }
+        var ok = oi === RC[qi];
+        var fb = document.getElementById('feedback-' + qi);
+        if (ok) {
+          el.classList.add('correcta');
+          p.classList.add('respondida-correcta');
+          fb.className = 'quiz-feedback correcto';
+          fb.innerHTML = '✅ <strong>¡Correcto!</strong> ' + EX[qi];
+          corr++;
+        } else {
+          el.classList.add('incorrecta');
+          p.classList.add('respondida-incorrecta');
+          ops[RC[qi]].classList.add('correcta');
+          fb.className = 'quiz-feedback incorrecto';
+          fb.innerHTML = '❌ <strong>Incorrecto.</strong> ' + EX[qi];
+        }
+        fb.classList.remove('hidden');
+        p.setAttribute('open', '');
+        resp++;
+        if (resp === TQ) mostrarPuntaje();
+      }
+
+      function mostrarPuntaje() {
+        var pct = Math.round((corr / TQ) * 100);
+        document.getElementById('scoreNumber').textContent = corr + '/' + TQ + ' (' + pct + '%)';
+        document.getElementById('scoreBar').style.width = pct + '%';
+        var msg =
+          pct === 100
+            ? '🌟 ¡Perfecto! ¡Excelente trabajo!'
+            : pct >= 80
+              ? '👏 ¡Muy bien! Sigue practicando.'
+              : pct >= 60
+                ? '👍 Buen esfuerzo. Repasa los errores.'
+                : '📚 Sigue practicando. ¡Tú puedes!';
+        document.getElementById('scoreMessage').textContent = msg;
+        document.getElementById('scorePanel').classList.remove('hidden');
+        document.getElementById('scorePanel').scrollIntoView({behavior: 'smooth'});
+      }
+
+      function reiniciarQuiz() {
+        resp = 0;
+        corr = 0;
+        document.getElementById('scorePanel').classList.add('hidden');
+        for (var i = 0; i < TQ; i++) {
+          var p = document.getElementById('pregunta-' + i);
+          p.classList.remove('respondida-correcta', 'respondida-incorrecta');
+          p.removeAttribute('open');
+          var ops = document.querySelectorAll('#opciones-' + i + ' .quiz-option');
+          for (var j = 0; j < ops.length; j++) {
+            ops[j].classList.remove('disabled', 'selected', 'correcta', 'incorrecta');
+          }
+          var fb = document.getElementById('feedback-' + i);
+          fb.className = 'quiz-feedback hidden';
+          fb.innerHTML = '';
+        }
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      }
+    </script>
+  </body>
+</html>

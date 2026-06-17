@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>El Sistema Nervioso Humano — GEDparaHispanos.com</title>
+    <style>
+      :root {
+        --clr-primary: #9b1c1c;
+        --clr-secondary: #b91c1c;
+        --clr-light: #fff1f2;
+        --clr-light-border: #fca5a5;
+        --clr-accent: #fb923c;
+        --clr-accent-hover: #fdba74;
+        --clr-accent-dark: #9b1c1c;
+        --clr-shadow: rgba(155, 28, 28, 0.1);
+        --clr-shadow-deep: rgba(155, 28, 28, 0.3);
+      }
+      li {
+        margin-left: 0.9em;
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700;900&display=swap');
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: 'Lato', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 19px;
+        line-height: 1.75;
+        color: #212529;
+        background: #f8f9fa;
+        padding: 1.5rem;
+      }
+      .quiz-container {
+        max-width: 860px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 16px;
+        padding: 2rem 2.5rem;
+        box-shadow: 0 4px 20px var(--clr-shadow);
+      }
+      .quiz-site-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
+        color: #fff;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin-bottom: 0.75rem;
+      }
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 900;
+        color: var(--clr-primary);
+        margin-bottom: 0.25rem;
+        line-height: 1.3;
+      }
+      .quiz-subtitulo {
+        color: #6b7280;
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .quiz-texto-lectura {
+        background: var(--clr-light);
+        border: 2px solid var(--clr-primary);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        line-height: 1.85;
+      }
+      .quiz-texto-lectura h2 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--clr-primary);
+        margin-bottom: 1rem;
+      }
+      .quiz-texto-lectura p {
+        margin-bottom: 1em;
+        text-align: justify;
+      }
+      .quiz-texto-lectura p:last-child {
+        margin-bottom: 0;
+      }
+      .quiz-instrucciones {
+        background: #fff8e1;
+        border-left: 5px solid #f59e0b;
+        padding: 0.9rem 1.2rem;
+        margin-bottom: 2rem;
+        border-radius: 0 8px 8px 0;
+        font-style: italic;
+        color: #78350f;
+        font-size: 0.95rem;
+      }
+      details {
+        background: #f8f9fa;
+        border: 2px solid var(--clr-primary);
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        transition: box-shadow 0.25s;
+      }
+      details:hover {
+        box-shadow: 0 4px 12px var(--clr-shadow-deep);
+      }
+      details[open] {
+        background: #fff;
+      }
+      summary {
+        background: var(--clr-primary);
+        color: #fff;
+        padding: 0.9em 1.4em;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 1.05em;
+        list-style: none;
+        transition: background-color 0.25s;
+        user-select: none;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::before {
+        content: '▶ ';
+        display: inline-block;
+        transition: transform 0.25s;
+        margin-right: 0.4em;
+      }
+      details[open] summary::before {
+        transform: rotate(90deg);
+      }
+      summary:hover {
+        background: var(--clr-secondary);
+      }
+      .details-contenido {
+        padding: 1.25rem 1.5rem;
+      }
+      details.respondida-correcta {
+        border-color: #16a34a;
+      }
+      details.respondida-correcta summary {
+        background: #16a34a;
+      }
+      details.respondida-incorrecta {
+        border-color: #dc2626;
+      }
+      details.respondida-incorrecta summary {
+        background: #dc2626;
+      }
+      .quiz-opciones {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6em;
+      }
+      .quiz-option {
+        display: flex;
+        align-items: center;
+        gap: 0.8em;
+        padding: 0.8em 1em;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        user-select: none;
+        background: #fff;
+      }
+      .quiz-option:hover {
+        border-color: var(--clr-secondary);
+        background: var(--clr-light);
+      }
+      .quiz-option.correcta {
+        border-color: #22c55e;
+        background: #f0fdf4;
+      }
+      .quiz-option.incorrecta {
+        border-color: #ef4444;
+        background: #fef2f2;
+      }
+      .quiz-option.disabled {
+        pointer-events: none;
+        opacity: 0.65;
+      }
+      .quiz-option.disabled.correcta {
+        opacity: 1;
+      }
+      .quiz-option-letter {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 0.85em;
+        color: #374151;
+        flex-shrink: 0;
+        transition: all 0.2s;
+      }
+      .quiz-option.correcta .quiz-option-letter {
+        background: #22c55e;
+        color: #fff;
+      }
+      .quiz-option.incorrecta .quiz-option-letter {
+        background: #ef4444;
+        color: #fff;
+      }
+      .quiz-option-text {
+        flex: 1;
+        color: #374151;
+        font-size: 0.97em;
+      }
+      .quiz-feedback {
+        margin-top: 0.8em;
+        padding: 0.85em 1em;
+        border-radius: 8px;
+        font-size: 0.9em;
+        line-height: 1.6;
+      }
+      .quiz-feedback.correcto {
+        background: #f0fdf4;
+        border: 1px solid #86efac;
+        color: #166534;
+      }
+      .quiz-feedback.incorrecto {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #991b1b;
+      }
+      .quiz-score-panel {
+        background: linear-gradient(135deg, var(--clr-primary), var(--clr-secondary));
+        color: #fff;
+        border-radius: 14px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        margin-top: 2rem;
+        box-shadow: 0 8px 24px var(--clr-shadow-deep);
+      }
+      .quiz-score-panel h2 {
+        color: #fff;
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .quiz-score-number {
+        font-size: 3.2rem;
+        font-weight: 900;
+        margin: 0.2em 0;
+        letter-spacing: -0.02em;
+      }
+      .quiz-score-bar-bg {
+        width: 100%;
+        max-width: 420px;
+        height: 14px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 7px;
+        margin: 1em auto;
+        overflow: hidden;
+      }
+      .quiz-score-bar-fill {
+        height: 100%;
+        background: var(--clr-accent);
+        border-radius: 7px;
+        transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .quiz-score-message {
+        font-size: 1.15em;
+        margin-top: 0.5em;
+        font-weight: 600;
+      }
+      .quiz-btn-reiniciar {
+        margin-top: 1.25em;
+        padding: 0.8em 2.2em;
+        background: var(--clr-accent);
+        color: var(--clr-accent-dark);
+        border: none;
+        border-radius: 8px;
+        font-size: 1em;
+        font-weight: 800;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: inline-block;
+      }
+      .quiz-btn-reiniciar:hover {
+        background: var(--clr-accent-hover);
+      }
+      .quiz-footer {
+        text-align: center;
+        color: #9ca3af;
+        font-size: 0.78rem;
+        margin-top: 2.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #e5e7eb;
+      }
+      .quiz-footer a {
+        color: var(--clr-primary);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      .quiz-footer a:hover {
+        text-decoration: underline;
+      }
+      .hidden {
+        display: none !important;
+      }
+      @media (max-width: 640px) {
+        body {
+          padding: 0.75rem;
+        }
+        .quiz-container {
+          padding: 1.25rem 1rem;
+          border-radius: 10px;
+        }
+        h1 {
+          font-size: 1.35rem;
+        }
+        .quiz-score-number {
+          font-size: 2.4rem;
+        }
+        .quiz-option {
+          padding: 0.65em 0.8em;
+        }
+      }
+      @media print {
+        body {
+          background: #fff;
+        }
+        .quiz-container {
+          box-shadow: none;
+        }
+        .quiz-btn-reiniciar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="quiz-container">
+      <div class="quiz-site-badge">🎓 GEDparaHispanos.com</div>
+
+      <h1>🧠 El Sistema Nervioso Humano</h1>
+      <p class="quiz-subtitulo">Comprensión lectora sobre las funciones y componentes del sistema nervioso</p>
+      <div class="quiz-texto-lectura">
+        <h2>📎 Texto de lectura</h2>
+        <p>
+          El sistema nervioso es la
+          <span style="background-color: #efd6df; padding: 2px; font-weight: 700">red de control y comunicaciones del cuerpo humano</span>
+          y está formado por el encéfalo, la médula espinal y los nervios. El encéfalo y la médula espinal controlan la red, mientras que los nervios los comunican con el resto del organismo.
+        </p>
+        <h3>El sistema nervioso humano tiene cuatro funciones básicas:</h3>
+        <ol>
+          <li>Recibir información sobre nuestro medio a través de los órganos de los sentidos.</li>
+          <li>Organizar la información e integrarla a la información almacenada.</li>
+          <li>Enviar instrucciones a los músculos y las glándulas con base en esta información.</li>
+          <li>Ofrecer vivencias conscientes, es decir, pensamientos, percepciones y sentimientos, sobre nuestra vida mental.</li>
+        </ol>
+        <p>
+          La
+          <strong>unidad básica</strong>
+          del sistema nervioso central es la neurona o célula nerviosa. Existen tres tipos de neuronas. Las
+          <span style="background-color: #efd6df; padding: 2px; font-weight: 700">neuronas sensoriales</span>
+          llevan impulsos de los órganos sensoriales, como los ojos y la piel, a la médula espinal y el encéfalo. Las
+          <span style="background-color: #efd6df; padding: 2px; font-weight: 700">interneuronas</span>
+          transmiten impulsos nerviosos en el encéfalo y la médula espinal, procesan información y comunican a las neuronas sensoriales y motoras. Por último, las
+          <span style="background-color: #efd6df; padding: 2px; font-weight: 700">neuronas motoras</span>
+          llevan impulsos del encéfalo y la médula espinal a los músculos y las glándulas de todo el organismo. Las interneuronas desempeñan las funciones más complejas. Existen aproximadamente
+          100,000 millones de estas neuronas y unos cuantos millones de neuronas sensoriales y motoras.
+        </p>
+        <p>
+          <span style="float: left; width: 100%; padding: 5px; font-size: 11px; text-align: center; font-style: italic">
+            <img src="https://static.gnoss.ws/didactalia/personalizacion/theme/resources/Imagenes_InfoVisual/041%20Neurona.jpg" alt="Descripción breve" />
+            <br />
+            <i>Pie de imagen.</i>
+          </span>
+          El diagrama ilustra una neurona motora. Estas neuronas reciben impulsos nerviosos de otras neuronas a través de las dendritas y el cuerpo de la célula. Después de recibir el mensaje,
+          transmite sus propios impulsos por el axón, el cual termina en ramificaciones en contacto con las fibras musculares.
+        </p>
+      </div>
+      <div class="quiz-instrucciones">Lee el texto con atención y responde cada pregunta eligiendo la mejor opción.</div>
+
+      <div id="quizPreguntas">
+        <details class="quiz-pregunta" id="pregunta-0">
+          <summary>Pregunta 1 — ¿Cuál es la idea principal del texto?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-0">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">El sistema nervioso es la red de control del cuerpo, formada por componentes especializados con funciones específicas.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Las neuronas motoras son las más importantes del sistema nervioso humano.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">El encéfalo es el único órgano que controla el sistema nervioso.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 0, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Los nervios sensoriales son la unidad básica del sistema nervioso central.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-0"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-1">
+          <summary>Pregunta 2 — ¿Por qué existen muchos más millones de interneuronas que de neuronas sensoriales o motoras?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-1">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Porque las interneuronas son más pequeñas y ocupan menos espacio.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Porque las interneuronas desempeñan las funciones más complejas del sistema nervioso.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Porque las neuronas motoras y sensoriales se desgastan más rápidamente.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 1, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Porque las interneuronas solo trabajan en la médula espinal.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-1"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-2">
+          <summary>Pregunta 3 — ¿En qué se diferencian las neuronas sensoriales de las neuronas motoras?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-2">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Las neuronas sensoriales están solo en el encéfalo, mientras que las motoras están solo en la médula espinal.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">
+                  Las neuronas sensoriales llevan impulsos hacia el encéfalo y la médula espinal, mientras que las motoras llevan impulsos desde estos hacia los músculos y glándulas.
+                </span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Las neuronas sensoriales producen movimiento y las motoras producen sensaciones.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 2, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Las neuronas sensoriales procesan información compleja y las motoras reciben información del medio ambiente.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-2"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-3">
+          <summary>Pregunta 4 — Según el texto, cuando una persona toca una superficie caliente y retira la mano, ¿qué tipo de neurona detecta el calor primero?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-3">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">La interneurona, porque procesa toda la información.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">La neurona motora, porque controla el movimiento de la mano.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">La neurona sensorial, porque lleva impulsos de la piel al encéfalo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 3, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">El axón, porque transmite los impulsos más rápido.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-3"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-4">
+          <summary>Pregunta 5 — ¿Qué función del sistema nervioso está relacionada con sentir alegría o tristeza?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-4">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Recibir información sobre el medio a través de los sentidos.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Enviar instrucciones a los músculos y las glándulas.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Organizar la información e integrarla con la información almacenada.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 4, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Ofrecer vivencias conscientes como pensamientos, percepciones y sentimientos.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-4"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-5">
+          <summary>Pregunta 6 — ¿Qué sucede en una neurona motora después de que recibe un impulso nervioso a través de las dendritas?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-5">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">El impulso regresa al encéfalo para ser procesado nuevamente.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">La neurona transmite sus propios impulsos por el axón hacia las fibras musculares.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Las dendritas envían el impulso directamente a los órganos sensoriales.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 5, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">El cuerpo de la célula destruye el impulso para evitar sobrecarga.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-5"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-6">
+          <summary>Pregunta 7 — ¿En qué se parecen las interneuronas y las neuronas motoras?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-6">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Ambas llevan impulsos desde los órganos sensoriales hacia el encéfalo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Ambas trabajan dentro del encéfalo y la médula espinal.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Ambas se conectan directamente con los músculos del organismo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 6, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Ambas existen en cantidades de aproximadamente 100,000 millones.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-6"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-7">
+          <summary>Pregunta 8 — ¿Qué se puede inferir sobre el papel de las interneuronas cuando una persona memoriza información nueva?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-7">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">Las interneuronas no participan en la memoria porque solo trabajan con movimientos.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">Las interneuronas participan activamente, ya que procesan información y se comunican entre neuronas dentro del encéfalo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Las neuronas motoras son las responsables de almacenar los recuerdos.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 7, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">Las neuronas sensoriales guardan la información nueva directamente en la médula espinal.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-7"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-8">
+          <summary>Pregunta 9 — ¿Cuál es la diferencia principal entre el papel del encéfalo y la médula espinal frente al papel de los nervios?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-8">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">El encéfalo y la médula espinal comunican el cuerpo con el exterior, mientras que los nervios controlan la red.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">El encéfalo y la médula espinal controlan la red, mientras que los nervios comunican con el resto del organismo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Los nervios controlan las funciones mentales y el encéfalo controla el movimiento.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 8, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">No existe diferencia; los tres componentes realizan las mismas funciones.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-8"></div>
+          </div>
+        </details>
+        <details class="quiz-pregunta" id="pregunta-9">
+          <summary>Pregunta 10 — ¿Qué se puede inferir sobre lo que ocurriría si las neuronas sensoriales dejaran de funcionar?</summary>
+          <div class="details-contenido">
+            <div class="quiz-opciones" id="opciones-9">
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 0)">
+                <span class="quiz-option-letter">A</span>
+                <span class="quiz-option-text">La persona perdería la capacidad de mover los músculos voluntariamente.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 1)">
+                <span class="quiz-option-letter">B</span>
+                <span class="quiz-option-text">El sistema nervioso no podría recibir información del medio ambiente a través de los sentidos.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 2)">
+                <span class="quiz-option-letter">C</span>
+                <span class="quiz-option-text">Las interneuronas dejarían de procesar toda la información almacenada en el encéfalo.</span>
+              </div>
+              <div class="quiz-option" onclick="seleccionarOpcion(this, 9, 3)">
+                <span class="quiz-option-letter">D</span>
+                <span class="quiz-option-text">El axón de las neuronas motoras dejaría de transmitir impulsos a las fibras musculares.</span>
+              </div>
+            </div>
+            <div class="quiz-feedback hidden" id="feedback-9"></div>
+          </div>
+        </details>
+      </div>
+
+      <div class="quiz-score-panel hidden" id="scorePanel">
+        <h2>📊 Resultado final</h2>
+        <div class="quiz-score-number" id="scoreNumber">0/10</div>
+        <div class="quiz-score-bar-bg"><div class="quiz-score-bar-fill" id="scoreBar" style="width: 0%"></div></div>
+        <div class="quiz-score-message" id="scoreMessage"></div>
+        <div class="quiz-btn-reiniciar" onclick="reiniciarQuiz()">🔄 Reiniciar ejercicio</div>
+      </div>
+
+      <div class="quiz-footer">
+        Ejercicio generado para
+        <a href="https://GEDparaHispanos.com" target="_blank">GEDparaHispanos.com</a>
+        — Preparación GED en español — Uso libre y gratuito
+      </div>
+    </div>
+
+    <script>
+      var RC = [0, 1, 1, 2, 3, 1, 1, 1, 1, 1];
+      var EX = [
+        'El texto describe en su totalidad la estructura, componentes y funciones del sistema nervioso, lo cual representa la idea central que une todos los párrafos.',
+        'El texto indica que las interneuronas desempeñan las funciones más complejas, lo que explica causalmente por qué existen en mayor cantidad: aproximadamente 100,000 millones frente a unos pocos millones de los otros tipos.',
+        'El texto explica claramente que las neuronas sensoriales llevan impulsos de los órganos sensoriales al encéfalo y médula espinal, mientras que las motoras hacen el recorrido opuesto: del encéfalo y médula espinal hacia los músculos y glándulas.',
+        'El texto señala que las neuronas sensoriales llevan impulsos de órganos como la piel hacia la médula espinal y el encéfalo, por lo que serían las primeras en detectar el estímulo del calor.',
+        'La cuarta función básica descrita en el texto menciona explícitamente los sentimientos como parte de las vivencias conscientes que ofrece el sistema nervioso.',
+        'El texto describe que después de recibir el mensaje por las dendritas y el cuerpo celular, la neurona motora transmite sus propios impulsos a través del axón, el cual termina en contacto con las fibras musculares.',
+        'El texto indica que las interneuronas transmiten impulsos en el encéfalo y la médula espinal, y que las neuronas motoras llevan impulsos del encéfalo y la médula espinal; ambas operan dentro de estas mismas estructuras.',
+        'El texto señala que las interneuronas procesan información y comunican neuronas dentro del encéfalo, lo que permite inferir que juegan un papel clave en funciones cognitivas complejas como la memorización.',
+        'El primer párrafo del texto distingue claramente estas funciones: el encéfalo y la médula espinal controlan la red, mientras que los nervios comunican esa red con el resto del organismo.',
+        'Las neuronas sensoriales llevan impulsos desde los órganos sensoriales hacia el encéfalo y médula espinal. Si dejaran de funcionar, el cuerpo no podría recibir información del exterior, afectando la primera función básica del sistema nervioso.'
+      ];
+      var TQ = 10;
+      var resp = 0,
+        corr = 0;
+
+      function seleccionarOpcion(el, qi, oi) {
+        var p = document.getElementById('pregunta-' + qi);
+        if (p.classList.contains('respondida-correcta') || p.classList.contains('respondida-incorrecta')) return;
+        var ops = document.querySelectorAll('#opciones-' + qi + ' .quiz-option');
+        for (var i = 0; i < ops.length; i++) {
+          ops[i].classList.add('disabled');
+          ops[i].classList.remove('selected');
+        }
+        var ok = oi === RC[qi];
+        var fb = document.getElementById('feedback-' + qi);
+        if (ok) {
+          el.classList.add('correcta');
+          p.classList.add('respondida-correcta');
+          fb.className = 'quiz-feedback correcto';
+          fb.innerHTML = '✅ <strong>¡Correcto!</strong> ' + EX[qi];
+          corr++;
+        } else {
+          el.classList.add('incorrecta');
+          p.classList.add('respondida-incorrecta');
+          ops[RC[qi]].classList.add('correcta');
+          fb.className = 'quiz-feedback incorrecto';
+          fb.innerHTML = '❌ <strong>Incorrecto.</strong> ' + EX[qi];
+        }
+        fb.classList.remove('hidden');
+        p.setAttribute('open', '');
+        resp++;
+        if (resp === TQ) mostrarPuntaje();
+      }
+
+      function mostrarPuntaje() {
+        var pct = Math.round((corr / TQ) * 100);
+        document.getElementById('scoreNumber').textContent = corr + '/' + TQ + ' (' + pct + '%)';
+        document.getElementById('scoreBar').style.width = pct + '%';
+        var msg =
+          pct === 100
+            ? '🌟 ¡Perfecto! ¡Excelente trabajo!'
+            : pct >= 80
+              ? '👏 ¡Muy bien! Sigue practicando.'
+              : pct >= 60
+                ? '👍 Buen esfuerzo. Repasa los errores.'
+                : '📚 Sigue practicando. ¡Tú puedes!';
+        document.getElementById('scoreMessage').textContent = msg;
+        document.getElementById('scorePanel').classList.remove('hidden');
+        document.getElementById('scorePanel').scrollIntoView({behavior: 'smooth'});
+      }
+
+      function reiniciarQuiz() {
+        resp = 0;
+        corr = 0;
+        document.getElementById('scorePanel').classList.add('hidden');
+        for (var i = 0; i < TQ; i++) {
+          var p = document.getElementById('pregunta-' + i);
+          p.classList.remove('respondida-correcta', 'respondida-incorrecta');
+          p.removeAttribute('open');
+          var ops = document.querySelectorAll('#opciones-' + i + ' .quiz-option');
+          for (var j = 0; j < ops.length; j++) {
+            ops[j].classList.remove('disabled', 'selected', 'correcta', 'incorrecta');
+          }
+          var fb = document.getElementById('feedback-' + i);
+          fb.className = 'quiz-feedback hidden';
+          fb.innerHTML = '';
+        }
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      }
+    </script>
+  </body>
+</html>
