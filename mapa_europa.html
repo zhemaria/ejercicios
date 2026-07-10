@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!--
+  Cambio en la población europea de 1990-2023
+  Autor: José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  Licencia: CC BY-NC-SA 4.0 — https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+  Generado con GEDparaHispanos.com
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cambio en la población europea de 1990-2023</title>
+<meta name="author" content="José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">
+<style>
+  :root{
+    --tinta:#1a1a2e; --papel:#ffffff; --crema:#fdf8f0;
+    --teal:#0f7b6c; --teal-osc:#0b5e52; --teal-claro:#d0ede9;
+    --borde:#cdd5d3; --verde:#1b5e20; --verde-bg:#e8f5e9;
+    --rojo:#c0392b; --rojo-bg:#fdecea; --ambar-bg:#fff8e1;
+    --marron:#5C3900; --muted:#555;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--crema);color:var(--tinta);line-height:1.55;padding:24px 14px 48px;}
+  .ejercicio{max-width:760px;margin:0 auto;background:var(--papel);border:1px solid var(--borde);border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(26,26,46,0.08);}
+  .ej-header{background:var(--teal);color:#fff;padding:22px 24px;}
+  .ej-header h1{font-size:1.45rem;font-weight:800;line-height:1.3;}
+  .ej-figura{margin:0;padding:18px 24px 4px;text-align:center;}
+  .ej-figura img{max-width:100%;height:auto;border:1px solid var(--borde);border-radius:8px;}
+  .marcador{margin:14px 24px;padding:10px 16px;background:var(--teal-claro);border-radius:8px;font-size:0.95rem;color:var(--teal-osc);font-weight:600;}
+  #contenedor{padding:0 24px;}
+  .pregunta{border:1px solid var(--borde);border-radius:12px;padding:18px;margin-bottom:18px;}
+  .p-titulo{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:1.05rem;color:var(--teal-osc);margin-bottom:10px;}
+  .p-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--teal);color:#fff;border-radius:7px;font-size:0.9rem;font-weight:800;flex-shrink:0;}
+  .p-tag{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;background:var(--teal-claro);color:var(--teal-osc);border:1px solid var(--teal);padding:2px 8px;border-radius:5px;}
+  .p-enunciado{font-size:1rem;font-weight:600;margin-bottom:12px;}
+  .opciones{display:grid;gap:8px;}
+  .opcion{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;background:var(--crema);border:1.5px solid var(--borde);border-radius:9px;padding:11px 13px;font-size:0.95rem;font-family:inherit;color:var(--tinta);cursor:pointer;transition:all .18s;}
+  .opcion:hover:not(:disabled){border-color:var(--teal);background:var(--teal-claro);}
+  .opcion:focus-visible{outline:3px solid var(--teal);outline-offset:2px;}
+  .op-letra{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;border-radius:50%;background:#fff;border:1.5px solid var(--borde);font-weight:800;font-size:0.8rem;flex-shrink:0;}
+  .op-texto{flex:1;}
+  .opcion.sel{border-color:var(--teal);background:var(--teal-claro);}
+  .opcion.sel .op-letra{background:var(--teal);color:#fff;border-color:var(--teal);}
+  .opcion.correcta{border-color:var(--verde);background:var(--verde-bg);color:var(--verde);font-weight:600;}
+  .opcion.correcta .op-letra{background:var(--verde);color:#fff;border-color:var(--verde);}
+  .opcion.incorrecta{border-color:var(--rojo);background:var(--rojo-bg);color:var(--rojo);}
+  .opcion.incorrecta .op-letra{background:var(--rojo);color:#fff;border-color:var(--rojo);}
+  .opcion:disabled{cursor:default;}
+  .p-acciones{margin-top:12px;}
+  .btn-comprobar{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:0.92rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .18s;}
+  .btn-comprobar:hover:not(:disabled){background:var(--teal-osc);}
+  .btn-comprobar:focus-visible{outline:3px solid var(--marron);outline-offset:2px;}
+  .btn-comprobar:disabled{background:#b8c4c1;color:#37423f;cursor:not-allowed;}
+  .feedback{margin-top:12px;padding:11px 14px;border-radius:8px;font-size:0.92rem;line-height:1.55;}
+  .fb-ok{background:var(--verde-bg);border:1px solid var(--verde);color:var(--verde);}
+  .fb-no{background:var(--ambar-bg);border:1px solid var(--marron);color:var(--marron);}
+  .acciones-globales{padding:6px 24px 4px;}
+  .btn-reiniciar{background:#fff;color:var(--teal-osc);border:1.5px solid var(--teal);border-radius:8px;padding:8px 16px;font-size:0.88rem;font-weight:700;font-family:inherit;cursor:pointer;}
+  .btn-reiniciar:hover{background:var(--teal-claro);}
+  .btn-reiniciar:focus-visible{outline:3px solid var(--marron);outline-offset:2px;}
+  .ej-footer{margin-top:18px;padding:18px 24px;border-top:1px solid var(--borde);font-size:0.8rem;color:var(--muted);text-align:center;}
+  .ej-footer a{color:var(--teal-osc);}
+  @media(max-width:520px){.ej-header h1{font-size:1.2rem;}.opcion{font-size:0.9rem;}}
+</style>
+</head>
+<body>
+<main class="ejercicio">
+  <header class="ej-header"><h1>Cambio en la población europea de 1990-2023</h1></header>
+  <figure class="ej-figura"><img src="https://elordenmundial.com/wp-content/uploads/2025/03/cambio-poblacion-europa-ordenador-previa.png" alt="Cambio en la población europea de 1990-2023"></figure>
+  <div class="marcador" role="status" aria-live="polite">Aciertos: <strong id="aciertos">0</strong> de <strong id="total">0</strong></div>
+  <div id="contenedor"></div>
+  <div class="acciones-globales"><button type="button" class="btn-reiniciar" id="btnReiniciar">&#8635; Reiniciar ejercicio</button></div>
+  <footer class="ej-footer">
+    <p>&copy; <span id="anio"></span> José M. Fernández — Adult Education Program · Harry S. Truman College · GEDparaHispanos.com</p>
+    <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener">Licencia CC BY-NC-SA 4.0</a></p>
+  </footer>
+</main>
+<script>
+(function(){
+  "use strict";
+  var PREGUNTAS = [{"pregunta":"¿Qué representa el color naranja oscuro en el mapa, según la leyenda?","tipo":"dato_especifico","opciones":["Un crecimiento superior al 45%","Una pérdida de población menor al -15%","Un crecimiento entre 15 y 30%","Ningún cambio en la población"],"correcta":1,"feedback":"La leyenda muestra que el naranja más oscuro corresponde a '\u003c-15%', es decir, a los países que perdieron más del 15% de su población. Se observa en Ucrania (-28%), los Balcanes (-28%, -23%, -31%) y otras regiones del este."},{"pregunta":"Según el mapa, ¿qué país con más de un millón de habitantes muestra el mayor aumento de población?","tipo":"interpretacion","opciones":["España (23%)","Francia (17%)","Turquía (56%)","Rusia (-2%)"],"correcta":2,"feedback":"Turquía aparece coloreada en azul oscuro (\u003e45%) con una etiqueta de 56%, el porcentaje más alto entre los países grandes representados en el mapa, superando incluso a Irlanda (48%)."},{"pregunta":"¿Qué simboliza el contraste cromático entre el oeste (tonos azules) y el este (tonos naranjas) del continente?","tipo":"simbolismo","opciones":["Una división entre países fríos y cálidos","Una división demográfica: crecimiento en el oeste y declive en el este","Una división entre países de la Unión Europea y los que no lo son","Una división entre países costeros e interiores"],"correcta":1,"feedback":"Los tonos azules representan crecimiento poblacional (positivo) y los naranjas, declive (negativo). El mapa usa esta paleta para ilustrar visualmente la brecha demográfica entre la Europa occidental, que crece, y la oriental, que pierde población."},{"pregunta":"¿Por qué Rusia aparece en un tono naranja claro con -2% mientras Ucrania está en naranja oscuro con -28%?","tipo":"causa_efecto","opciones":["Porque Rusia ganó población y Ucrania la perdió por igual","Porque el descenso poblacional de Ucrania fue mucho más pronunciado que el de Rusia","Porque Rusia tiene una tasa de natalidad mayor que Ucrania","Porque el mapa no distingue entre ambos países"],"correcta":1,"feedback":"El color más oscuro de Ucrania indica una pérdida mayor (-28%, dentro de la categoría \u003c-15%), mientras el tono claro de Rusia refleja un descenso leve (-2%). La emigración masiva y los conflictos afectaron mucho más a Ucrania."},{"pregunta":"Los pequeños puntos de color oscuro sobre países como Suiza (32%), Luxemburgo (74%) y otros microestados, ¿qué representan?","tipo":"inferencia","opciones":["Errores de impresión del mapa","Territorios demasiado pequeños para colorear que se marcan con un punto para mostrar su dato","Capitales de cada país","Zonas con conflictos armados"],"correcta":1,"feedback":"Los puntos se usan para señalar Estados de superficie muy reducida (Luxemburgo, Andorra, Malta, San Marino, etc.), cuyo tamaño no permite colorear el territorio, pero cuyo alto crecimiento (como el 74% de Luxemburgo) se destaca con el punto."},{"pregunta":"¿Qué punto de vista o mensaje transmite el mapa al colocar juntos los datos de Irlanda (48%) y Turquía (56%) en el mismo tono más oscuro de azul?","tipo":"punto_de_vista","opciones":["Que ambos son países insulares","Que ambos comparten la misma cultura","Que ambos han experimentado un crecimiento poblacional excepcionalmente alto","Que ambos han perdido población de forma dramática"],"correcta":2,"feedback":"El azul oscuro (\u003e45%) agrupa a Irlanda y Turquía como los casos de mayor crecimiento entre países grandes. La elección visual resalta que, pese a su distinta ubicación, ambos comparten un aumento demográfico extraordinario."},{"pregunta":"A partir del patrón de colores del mapa, ¿qué se puede inferir sobre las dinámicas migratorias tras la caída del Muro de Berlín?","tipo":"inferencia","opciones":["La población se movió del oeste hacia el este europeo","La población tendió a desplazarse del este hacia el oeste, reforzando su crecimiento","No hubo movimientos migratorios significativos","La migración solo afectó a los países nórdicos"],"correcta":1,"feedback":"El contraste entre el declive del este (naranjas) y el crecimiento del oeste (azules) sugiere un flujo migratorio del este hacia el oeste. La emigración masiva desde las exrepúblicas soviéticas hacia Europa occidental explica en parte estos patrones de color opuestos."}];
+  var TIPOS = {
+    interpretacion:'Interpretación', inferencia:'Inferencia',
+    causa_efecto:'Causa-efecto', simbolismo:'Simbolismo',
+    punto_de_vista:'Punto de vista', dato_especifico:'Dato específico'
+  };
+  var cont = document.getElementById('contenedor');
+  var totalEl = document.getElementById('total');
+  var aciertosEl = document.getElementById('aciertos');
+  var estado = [];
+  function letra(i){ return String.fromCharCode(65 + i); }
+  function actualizarMarcador(){
+    var n = 0, i;
+    for(i = 0; i < estado.length; i++){ if(estado[i].acertada){ n++; } }
+    aciertosEl.textContent = n;
+  }
+  function seleccionar(i, j){
+    if(estado[i].comprobada){ return; }
+    estado[i].sel = j;
+    var sec = cont.children[i];
+    var botones = sec.querySelectorAll('.opcion');
+    for(var k = 0; k < botones.length; k++){
+      var on = (k === j);
+      botones[k].classList.toggle('sel', on);
+      botones[k].setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    sec.querySelector('.btn-comprobar').disabled = false;
+  }
+  function comprobar(i){
+    var st = estado[i];
+    if(st.comprobada || st.sel === null){ return; }
+    st.comprobada = true;
+    var correcta = parseInt(PREGUNTAS[i].correcta, 10);
+    st.acertada = (st.sel === correcta);
+    var sec = cont.children[i];
+    var botones = sec.querySelectorAll('.opcion');
+    for(var k = 0; k < botones.length; k++){
+      botones[k].disabled = true;
+      botones[k].classList.remove('sel');
+      if(k === correcta){ botones[k].classList.add('correcta'); }
+      else if(k === st.sel){ botones[k].classList.add('incorrecta'); }
+    }
+    sec.querySelector('.btn-comprobar').disabled = true;
+    var fb = sec.querySelector('.feedback');
+    fb.className = 'feedback ' + (st.acertada ? 'fb-ok' : 'fb-no');
+    fb.hidden = false;
+    fb.innerHTML = '';
+    var lead = document.createElement('strong');
+    lead.textContent = st.acertada ? '¡Correcto! ' : 'Respuesta incorrecta. ';
+    fb.appendChild(lead);
+    if(!st.acertada){
+      var corr = document.createElement('span');
+      corr.textContent = 'La opción correcta es la ' + letra(correcta) + '. ';
+      fb.appendChild(corr);
+    }
+    if(PREGUNTAS[i].feedback){
+      fb.appendChild(document.createTextNode(PREGUNTAS[i].feedback));
+    }
+    actualizarMarcador();
+  }
+  function construir(){
+    cont.innerHTML = '';
+    totalEl.textContent = PREGUNTAS.length;
+    estado = [];
+    PREGUNTAS.forEach(function(q, i){
+      estado.push({ sel:null, comprobada:false, acertada:false });
+      var sec = document.createElement('section');
+      sec.className = 'pregunta';
+      sec.setAttribute('aria-labelledby', 'p' + i + '-titulo');
+      var h2 = document.createElement('h2');
+      h2.id = 'p' + i + '-titulo';
+      h2.className = 'p-titulo';
+      var num = document.createElement('span');
+      num.className = 'p-num';
+      num.setAttribute('aria-hidden', 'true');
+      num.textContent = (i + 1);
+      h2.appendChild(num);
+      h2.appendChild(document.createTextNode(' Pregunta ' + (i + 1)));
+      if(q.tipo && TIPOS[q.tipo]){
+        var tag = document.createElement('span');
+        tag.className = 'p-tag';
+        tag.textContent = TIPOS[q.tipo];
+        h2.appendChild(tag);
+      }
+      sec.appendChild(h2);
+      var enun = document.createElement('p');
+      enun.className = 'p-enunciado';
+      enun.textContent = q.pregunta || '';
+      sec.appendChild(enun);
+      var grupo = document.createElement('div');
+      grupo.className = 'opciones';
+      grupo.setAttribute('role', 'group');
+      grupo.setAttribute('aria-label', 'Opciones de respuesta para la pregunta ' + (i + 1));
+      (q.opciones || []).forEach(function(opt, j){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'opcion';
+        b.setAttribute('aria-pressed', 'false');
+        var l = document.createElement('span');
+        l.className = 'op-letra';
+        l.setAttribute('aria-hidden', 'true');
+        l.textContent = letra(j);
+        b.appendChild(l);
+        var t = document.createElement('span');
+        t.className = 'op-texto';
+        t.textContent = opt;
+        b.appendChild(t);
+        b.addEventListener('click', function(){ seleccionar(i, j); });
+        grupo.appendChild(b);
+      });
+      sec.appendChild(grupo);
+      var acc = document.createElement('div');
+      acc.className = 'p-acciones';
+      var bc = document.createElement('button');
+      bc.type = 'button';
+      bc.className = 'btn-comprobar';
+      bc.textContent = 'Comprobar respuesta';
+      bc.disabled = true;
+      bc.addEventListener('click', function(){ comprobar(i); });
+      acc.appendChild(bc);
+      sec.appendChild(acc);
+      var fb = document.createElement('div');
+      fb.className = 'feedback';
+      fb.hidden = true;
+      sec.appendChild(fb);
+      cont.appendChild(sec);
+    });
+    actualizarMarcador();
+  }
+  var btnR = document.getElementById('btnReiniciar');
+  if(btnR){ btnR.addEventListener('click', construir); }
+  var anio = document.getElementById('anio');
+  if(anio){ anio.textContent = new Date().getFullYear(); }
+  construir();
+})();
+</script>
+</body>
+</html>

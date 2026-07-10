@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<!--
+  Las cuencas hidrográficas de los principales ríos brasileños
+  Autor: José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago
+  Licencia: CC BY-NC-SA 4.0 — https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es
+  Generado con GEDparaHispanos.com
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Las cuencas hidrográficas de los principales ríos brasileños</title>
+<meta name="author" content="José M. Fernández, ABE/ASE Math Master Teacher, Harry S. Truman College — City Colleges of Chicago">
+<meta name="license" content="CC BY-NC-SA 4.0">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">
+<style>
+  :root{
+    --tinta:#1a1a2e; --papel:#ffffff; --crema:#fdf8f0;
+    --teal:#0f7b6c; --teal-osc:#0b5e52; --teal-claro:#d0ede9;
+    --borde:#cdd5d3; --verde:#1b5e20; --verde-bg:#e8f5e9;
+    --rojo:#c0392b; --rojo-bg:#fdecea; --ambar-bg:#fff8e1;
+    --marron:#5C3900; --muted:#555;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--crema);color:var(--tinta);line-height:1.55;padding:24px 14px 48px;}
+  .ejercicio{max-width:760px;margin:0 auto;background:var(--papel);border:1px solid var(--borde);border-radius:14px;overflow:hidden;box-shadow:0 4px 20px rgba(26,26,46,0.08);}
+  .ej-header{background:var(--teal);color:#fff;padding:22px 24px;}
+  .ej-header h1{font-size:1.45rem;font-weight:800;line-height:1.3;}
+  .ej-figura{margin:0;padding:18px 24px 4px;text-align:center;}
+  .ej-figura img{max-width:100%;height:auto;border:1px solid var(--borde);border-radius:8px;}
+  .marcador{margin:14px 24px;padding:10px 16px;background:var(--teal-claro);border-radius:8px;font-size:0.95rem;color:var(--teal-osc);font-weight:600;}
+  #contenedor{padding:0 24px;}
+  .pregunta{border:1px solid var(--borde);border-radius:12px;padding:18px;margin-bottom:18px;}
+  .p-titulo{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:1.05rem;color:var(--teal-osc);margin-bottom:10px;}
+  .p-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--teal);color:#fff;border-radius:7px;font-size:0.9rem;font-weight:800;flex-shrink:0;}
+  .p-tag{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;background:var(--teal-claro);color:var(--teal-osc);border:1px solid var(--teal);padding:2px 8px;border-radius:5px;}
+  .p-enunciado{font-size:1rem;font-weight:600;margin-bottom:12px;}
+  .opciones{display:grid;gap:8px;}
+  .opcion{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;background:var(--crema);border:1.5px solid var(--borde);border-radius:9px;padding:11px 13px;font-size:0.95rem;font-family:inherit;color:var(--tinta);cursor:pointer;transition:all .18s;}
+  .opcion:hover:not(:disabled){border-color:var(--teal);background:var(--teal-claro);}
+  .opcion:focus-visible{outline:3px solid var(--teal);outline-offset:2px;}
+  .op-letra{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;border-radius:50%;background:#fff;border:1.5px solid var(--borde);font-weight:800;font-size:0.8rem;flex-shrink:0;}
+  .op-texto{flex:1;}
+  .opcion.sel{border-color:var(--teal);background:var(--teal-claro);}
+  .opcion.sel .op-letra{background:var(--teal);color:#fff;border-color:var(--teal);}
+  .opcion.correcta{border-color:var(--verde);background:var(--verde-bg);color:var(--verde);font-weight:600;}
+  .opcion.correcta .op-letra{background:var(--verde);color:#fff;border-color:var(--verde);}
+  .opcion.incorrecta{border-color:var(--rojo);background:var(--rojo-bg);color:var(--rojo);}
+  .opcion.incorrecta .op-letra{background:var(--rojo);color:#fff;border-color:var(--rojo);}
+  .opcion:disabled{cursor:default;}
+  .p-acciones{margin-top:12px;}
+  .btn-comprobar{background:var(--teal);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-size:0.92rem;font-weight:700;font-family:inherit;cursor:pointer;transition:background .18s;}
+  .btn-comprobar:hover:not(:disabled){background:var(--teal-osc);}
+  .btn-comprobar:focus-visible{outline:3px solid var(--marron);outline-offset:2px;}
+  .btn-comprobar:disabled{background:#b8c4c1;color:#37423f;cursor:not-allowed;}
+  .feedback{margin-top:12px;padding:11px 14px;border-radius:8px;font-size:0.92rem;line-height:1.55;}
+  .fb-ok{background:var(--verde-bg);border:1px solid var(--verde);color:var(--verde);}
+  .fb-no{background:var(--ambar-bg);border:1px solid var(--marron);color:var(--marron);}
+  .acciones-globales{padding:6px 24px 4px;}
+  .btn-reiniciar{background:#fff;color:var(--teal-osc);border:1.5px solid var(--teal);border-radius:8px;padding:8px 16px;font-size:0.88rem;font-weight:700;font-family:inherit;cursor:pointer;}
+  .btn-reiniciar:hover{background:var(--teal-claro);}
+  .btn-reiniciar:focus-visible{outline:3px solid var(--marron);outline-offset:2px;}
+  .ej-footer{margin-top:18px;padding:18px 24px;border-top:1px solid var(--borde);font-size:0.8rem;color:var(--muted);text-align:center;}
+  .ej-footer a{color:var(--teal-osc);}
+  @media(max-width:520px){.ej-header h1{font-size:1.2rem;}.opcion{font-size:0.9rem;}}
+</style>
+</head>
+<body>
+<main class="ejercicio">
+  <header class="ej-header"><h1>Las cuencas hidrográficas de los principales ríos brasileños</h1></header>
+  <figure class="ej-figura"><img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Bacia_hidro.jpg" alt="Las cuencas hidrográficas de los principales ríos brasileños"></figure>
+  <div class="marcador" role="status" aria-live="polite">Aciertos: <strong id="aciertos">0</strong> de <strong id="total">0</strong></div>
+  <div id="contenedor"></div>
+  <div class="acciones-globales"><button type="button" class="btn-reiniciar" id="btnReiniciar">&#8635; Reiniciar ejercicio</button></div>
+  <footer class="ej-footer">
+    <p>&copy; <span id="anio"></span> José M. Fernández — Adult Education Program · Harry S. Truman College · GEDparaHispanos.com</p>
+    <p><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es" target="_blank" rel="noopener">Licencia CC BY-NC-SA 4.0</a></p>
+  </footer>
+</main>
+<script>
+(function(){
+  "use strict";
+  var PREGUNTAS = [{"pregunta":"¿Qué título aparece en la parte superior derecha del mapa, indicando su tema principal?","tipo":"dato_especifico","opciones":["Relieve de Brasil","Bacias Hidrográficas (Cuencas Hidrográficas)","Clima tropical","Densidad de población"],"correcta":1,"feedback":"En la esquina superior derecha se lee claramente 'BACIAS HIDROGRÁFICAS', que significa 'Cuencas Hidrográficas', confirmando que el mapa representa las cuencas de los principales ríos brasileños."},{"pregunta":"El mapa utiliza distintos colores para representar áreas geográficas. ¿Qué simbolizan estas manchas de color?","tipo":"simbolismo","opciones":["Zonas climáticas diferentes","Las distintas cuencas hidrográficas de cada río principal","Divisiones políticas entre estados","Áreas de vegetación distinta"],"correcta":1,"feedback":"Cada mancha de color agrupa el territorio drenado por un sistema fluvial concreto; por ejemplo, el gran área verde corresponde a la cuenca del Amazonas y sus afluentes (Rio Negro, Solimões, Madeira), simbolizando así las cuencas hidrográficas."},{"pregunta":"La mancha verde más extensa, que ocupa el norte del país, representa la cuenca de ¿cuál río?","tipo":"interpretacion","opciones":["Río São Francisco","Río Paraná","Río Amazonas","Río Paraguay"],"correcta":2,"feedback":"El área verde abarca la región norte y contiene los nombres Rio Amazonas, Rio Negro, Rio Solimões y Rio Madeira, lo que la identifica como la extensa cuenca amazónica, la mayor del mapa."},{"pregunta":"¿Qué representan las líneas azules que recorren el interior de cada mancha de color?","tipo":"simbolismo","opciones":["Fronteras internacionales","Los ríos y sus afluentes","Carreteras principales","Líneas de altitud del relieve"],"correcta":1,"feedback":"Las líneas azules ramificadas con nombres como 'Rio Grande', 'Rio Paraná' o 'Rio Tietê' representan los cursos de agua (ríos y afluentes) que forman cada cuenca hidrográfica."},{"pregunta":"En el centro-sur, la mancha morada/púrpura sigue de cerca la frontera con Bolivia, Paraguay y Argentina. ¿Qué se puede inferir sobre esta cuenca?","tipo":"inferencia","opciones":["Es una cuenca aislada sin conexión con países vecinos","Corresponde a un río compartido con países vecinos, como el Paraguay/Paraná","Es la cuenca más pequeña del país","Representa solo un lago interior sin desagüe"],"correcta":1,"feedback":"La mancha morada bordea las fronteras de Bolivia, Paraguay y Argentina siguiendo el curso del Rio Paraguay/Paraná, lo que permite inferir que se trata de una cuenca transfronteriza compartida con esos países."},{"pregunta":"El mapa muestra que la cuenca amazónica (verde) es mucho más extensa que las demás. ¿Qué idea principal transmite este contraste de tamaños?","tipo":"punto_de_vista","opciones":["Que el Amazonas es el sistema fluvial dominante y más importante de Brasil","Que el sur del país no tiene ríos","Que todas las cuencas tienen igual importancia económica","Que el norte carece de agua dulce"],"correcta":0,"feedback":"Al ocupar casi todo el norte y noroeste del país, la enorme mancha verde comunica visualmente que la cuenca amazónica es el sistema hidrográfico más grande y dominante de Brasil frente a las cuencas más pequeñas del resto del territorio."},{"pregunta":"Observando que las cuencas cubren prácticamente todo el territorio y que casi todas las ciudades (Manaus, Belém, Brasília, Curitiba) están cerca de ríos, ¿qué se puede inferir sobre la relación entre ríos y poblaciones?","tipo":"causa_efecto","opciones":["Las ciudades evitan deliberadamente los ríos por riesgo de inundación","Los ríos han sido un factor clave en la ubicación y desarrollo de las ciudades","Las poblaciones no dependen del agua de los ríos","Los ríos solo sirven para separar los estados"],"correcta":1,"feedback":"La proximidad de importantes ciudades como Manaus, Belém o Curitiba a los cursos fluviales del mapa permite inferir que los ríos han sido decisivos para el asentamiento humano, al proporcionar agua, transporte y recursos, tal como sugiere el contexto sobre navegación y energía."}];
+  var TIPOS = {
+    interpretacion:'Interpretación', inferencia:'Inferencia',
+    causa_efecto:'Causa-efecto', simbolismo:'Simbolismo',
+    punto_de_vista:'Punto de vista', dato_especifico:'Dato específico'
+  };
+  var cont = document.getElementById('contenedor');
+  var totalEl = document.getElementById('total');
+  var aciertosEl = document.getElementById('aciertos');
+  var estado = [];
+  function letra(i){ return String.fromCharCode(65 + i); }
+  function actualizarMarcador(){
+    var n = 0, i;
+    for(i = 0; i < estado.length; i++){ if(estado[i].acertada){ n++; } }
+    aciertosEl.textContent = n;
+  }
+  function seleccionar(i, j){
+    if(estado[i].comprobada){ return; }
+    estado[i].sel = j;
+    var sec = cont.children[i];
+    var botones = sec.querySelectorAll('.opcion');
+    for(var k = 0; k < botones.length; k++){
+      var on = (k === j);
+      botones[k].classList.toggle('sel', on);
+      botones[k].setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+    sec.querySelector('.btn-comprobar').disabled = false;
+  }
+  function comprobar(i){
+    var st = estado[i];
+    if(st.comprobada || st.sel === null){ return; }
+    st.comprobada = true;
+    var correcta = parseInt(PREGUNTAS[i].correcta, 10);
+    st.acertada = (st.sel === correcta);
+    var sec = cont.children[i];
+    var botones = sec.querySelectorAll('.opcion');
+    for(var k = 0; k < botones.length; k++){
+      botones[k].disabled = true;
+      botones[k].classList.remove('sel');
+      if(k === correcta){ botones[k].classList.add('correcta'); }
+      else if(k === st.sel){ botones[k].classList.add('incorrecta'); }
+    }
+    sec.querySelector('.btn-comprobar').disabled = true;
+    var fb = sec.querySelector('.feedback');
+    fb.className = 'feedback ' + (st.acertada ? 'fb-ok' : 'fb-no');
+    fb.hidden = false;
+    fb.innerHTML = '';
+    var lead = document.createElement('strong');
+    lead.textContent = st.acertada ? '¡Correcto! ' : 'Respuesta incorrecta. ';
+    fb.appendChild(lead);
+    if(!st.acertada){
+      var corr = document.createElement('span');
+      corr.textContent = 'La opción correcta es la ' + letra(correcta) + '. ';
+      fb.appendChild(corr);
+    }
+    if(PREGUNTAS[i].feedback){
+      fb.appendChild(document.createTextNode(PREGUNTAS[i].feedback));
+    }
+    actualizarMarcador();
+  }
+  function construir(){
+    cont.innerHTML = '';
+    totalEl.textContent = PREGUNTAS.length;
+    estado = [];
+    PREGUNTAS.forEach(function(q, i){
+      estado.push({ sel:null, comprobada:false, acertada:false });
+      var sec = document.createElement('section');
+      sec.className = 'pregunta';
+      sec.setAttribute('aria-labelledby', 'p' + i + '-titulo');
+      var h2 = document.createElement('h2');
+      h2.id = 'p' + i + '-titulo';
+      h2.className = 'p-titulo';
+      var num = document.createElement('span');
+      num.className = 'p-num';
+      num.setAttribute('aria-hidden', 'true');
+      num.textContent = (i + 1);
+      h2.appendChild(num);
+      h2.appendChild(document.createTextNode(' Pregunta ' + (i + 1)));
+      if(q.tipo && TIPOS[q.tipo]){
+        var tag = document.createElement('span');
+        tag.className = 'p-tag';
+        tag.textContent = TIPOS[q.tipo];
+        h2.appendChild(tag);
+      }
+      sec.appendChild(h2);
+      var enun = document.createElement('p');
+      enun.className = 'p-enunciado';
+      enun.textContent = q.pregunta || '';
+      sec.appendChild(enun);
+      var grupo = document.createElement('div');
+      grupo.className = 'opciones';
+      grupo.setAttribute('role', 'group');
+      grupo.setAttribute('aria-label', 'Opciones de respuesta para la pregunta ' + (i + 1));
+      (q.opciones || []).forEach(function(opt, j){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'opcion';
+        b.setAttribute('aria-pressed', 'false');
+        var l = document.createElement('span');
+        l.className = 'op-letra';
+        l.setAttribute('aria-hidden', 'true');
+        l.textContent = letra(j);
+        b.appendChild(l);
+        var t = document.createElement('span');
+        t.className = 'op-texto';
+        t.textContent = opt;
+        b.appendChild(t);
+        b.addEventListener('click', function(){ seleccionar(i, j); });
+        grupo.appendChild(b);
+      });
+      sec.appendChild(grupo);
+      var acc = document.createElement('div');
+      acc.className = 'p-acciones';
+      var bc = document.createElement('button');
+      bc.type = 'button';
+      bc.className = 'btn-comprobar';
+      bc.textContent = 'Comprobar respuesta';
+      bc.disabled = true;
+      bc.addEventListener('click', function(){ comprobar(i); });
+      acc.appendChild(bc);
+      sec.appendChild(acc);
+      var fb = document.createElement('div');
+      fb.className = 'feedback';
+      fb.hidden = true;
+      sec.appendChild(fb);
+      cont.appendChild(sec);
+    });
+    actualizarMarcador();
+  }
+  var btnR = document.getElementById('btnReiniciar');
+  if(btnR){ btnR.addEventListener('click', construir); }
+  var anio = document.getElementById('anio');
+  if(anio){ anio.textContent = new Date().getFullYear(); }
+  construir();
+})();
+</script>
+</body>
+</html>
